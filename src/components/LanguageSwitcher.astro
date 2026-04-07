@@ -5,7 +5,7 @@ const locales: Locale[] = ["en", "da", "ko"];
 ---
 
 <div
-  class="fixed right-4 top-4 z-50 flex items-center gap-0.5 border border-ink bg-canvas px-0.5 py-0.5 md:right-6 md:top-6"
+  class="fixed right-4 top-4 z-50 flex items-center gap-0.5 border border-ink/15 bg-canvas/95 px-0.5 py-0.5 shadow-sm backdrop-blur-sm md:right-6 md:top-6"
   role="navigation"
   aria-label="Language"
 >
@@ -30,6 +30,8 @@ const locales: Locale[] = ["en", "da", "ko"];
 
   type Locale = "en" | "da" | "ko";
 
+  type CvBlock = { year: string; items: string[] };
+
   function setText(selector: string, value: string) {
     document.querySelectorAll<HTMLElement>(selector).forEach((el) => {
       el.textContent = value;
@@ -42,73 +44,51 @@ const locales: Locale[] = ["en", "da", "ko"];
     });
   }
 
-  type CvBlock = { year: string; items: string[] };
-  type CvCopy = {
-    introName: string;
-    introRoles: string;
-    introEducation: string;
-    blocks: CvBlock[];
-  };
-
-  function renderCv(cv: CvCopy) {
-    const root = document.getElementById("cv-dynamic");
+  function renderCareerAccordion(blocks: CvBlock[]) {
+    const root = document.getElementById("career-accordion");
     if (!root) return;
 
     root.replaceChildren();
 
-    const introWrap = document.createElement("div");
-    introWrap.className = "space-y-3 border-b border-dashed border-ink pb-10 text-muted";
+    for (const block of blocks) {
+      const details = document.createElement("details");
+      details.className = "group border-b border-ink/10";
 
-    const nameEl = document.createElement("p");
-    nameEl.className = "font-serif text-xl text-ink";
-    nameEl.textContent = cv.introName;
-    introWrap.appendChild(nameEl);
+      const summary = document.createElement("summary");
+      summary.className =
+        "flex cursor-pointer list-none items-center justify-between gap-4 py-5 outline-none [&::-webkit-details-marker]:hidden";
 
-    const emailP = document.createElement("p");
-    const emailA = document.createElement("a");
-    emailA.href = "mailto:sofiefribo.korea@gmail.com";
-    emailA.className =
-      "text-ink underline decoration-ink decoration-1 underline-offset-[5px] transition hover:opacity-80";
-    emailA.textContent = "sofiefribo.korea@gmail.com";
-    emailP.appendChild(emailA);
-    introWrap.appendChild(emailP);
+      const yearSpan = document.createElement("span");
+      yearSpan.className =
+        "font-serif text-lg font-medium tracking-tight text-ink md:text-xl";
+      yearSpan.textContent = block.year;
 
-    const rolesEl = document.createElement("p");
-    rolesEl.className = "leading-relaxed";
-    rolesEl.textContent = cv.introRoles;
-    introWrap.appendChild(rolesEl);
+      const chev = document.createElement("span");
+      chev.className =
+        "inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-ink/15 text-muted transition-transform duration-200 group-open:rotate-180";
+      chev.setAttribute("aria-hidden", "true");
+      chev.textContent = "↓";
 
-    const eduEl = document.createElement("p");
-    eduEl.className = "leading-relaxed";
-    eduEl.textContent = cv.introEducation;
-    introWrap.appendChild(eduEl);
+      summary.appendChild(yearSpan);
+      summary.appendChild(chev);
 
-    root.appendChild(introWrap);
-
-    const n = cv.blocks.length;
-    cv.blocks.forEach((block, i) => {
-      const section = document.createElement("section");
-      const isLast = i === n - 1;
-      section.className = isLast
-        ? "mb-0 border-b-0 pb-0"
-        : "mb-10 border-b border-dashed border-ink pb-10";
-
-      const h3 = document.createElement("h3");
-      h3.className =
-        "mb-4 font-sans text-xs font-semibold uppercase tracking-[0.2em] text-ink";
-      h3.textContent = block.year;
-      section.appendChild(h3);
+      const panel = document.createElement("div");
+      panel.className = "border-t border-line bg-smudge/50 px-1 py-5 md:px-3";
 
       const ul = document.createElement("ul");
-      ul.className = "list-disc space-y-2 pl-5 leading-relaxed text-muted";
+      ul.className =
+        "list-disc space-y-2.5 pl-5 font-sans text-sm leading-relaxed text-muted md:text-[15px]";
       for (const item of block.items) {
         const li = document.createElement("li");
         li.textContent = item;
         ul.appendChild(li);
       }
-      section.appendChild(ul);
-      root.appendChild(section);
-    });
+      panel.appendChild(ul);
+
+      details.appendChild(summary);
+      details.appendChild(panel);
+      root.appendChild(details);
+    }
   }
 
   function applyLocale(locale: Locale) {
@@ -119,44 +99,46 @@ const locales: Locale[] = ["en", "da", "ko"];
     const md = document.querySelector<HTMLMetaElement>('meta[name="description"]');
     if (md) md.content = t.meta.description;
 
-    setText("[data-i18n='hero.eyebrow']", t.hero.eyebrow);
-    setText("[data-i18n='hero.titleLine1']", t.hero.titleLine1);
-    setText("[data-i18n='hero.titleLine2']", t.hero.titleLine2);
-    setText("[data-i18n='hero.lead']", t.hero.lead);
+    setText("[data-i18n='hero.tagline']", t.hero.tagline);
+    setText("[data-i18n='hero.name']", t.hero.name);
+    setText("[data-i18n='hero.role']", t.hero.role);
     setText("[data-i18n='hero.cta']", t.hero.cta);
-    const ctaLink = document.querySelector<HTMLAnchorElement>("[data-i18n-attr='hero.cta']");
-    if (ctaLink) ctaLink.setAttribute("aria-label", `${t.hero.cta}. ${t.hero.ctaHint}`);
-
-    setText("[data-i18n='gallery.title']", t.gallery.title);
-    setText("[data-i18n='gallery.subtitle']", t.gallery.subtitle);
-    setText("[data-i18n='gallery.tag']", t.gallery.tag);
-    t.gallery.captions.forEach((cap, i) => {
-      setText(`[data-i18n='gallery.caption${i}']`, cap);
-      document.querySelectorAll(`img[data-gallery-i="${i}"]`).forEach((img) => {
-        img.setAttribute("alt", cap);
-      });
-    });
+    const heroCta = document.querySelector<HTMLAnchorElement>("[data-i18n-attr='hero.cta']");
+    if (heroCta) heroCta.setAttribute("aria-label", `${t.hero.cta}. ${t.hero.ctaHint}`);
 
     setText("[data-i18n='about.title']", t.about.title);
-    setText("[data-i18n='about.pullQuote']", t.about.pullQuote);
     setText("[data-i18n='about.p1']", t.about.p1);
     setText("[data-i18n='about.p2']", t.about.p2);
+    setText("[data-i18n='about.p3']", t.about.p3);
 
-    setText("[data-i18n='cv.title']", t.cv.title);
-    renderCv(t.cv);
+    setText("[data-i18n='career.title']", t.career.title);
+    setText("[data-i18n='career.hint']", t.career.hint);
+    renderCareerAccordion(t.career.blocks);
 
-    setText("[data-i18n='footer.brand']", t.footer.brand);
+    setText("[data-i18n='collaboration.title']", t.collaboration.title);
+    setText("[data-i18n='collaboration.role']", t.collaboration.role);
+    setText("[data-i18n='collaboration.p1']", t.collaboration.p1);
+    setText("[data-i18n='collaboration.p2']", t.collaboration.p2);
+    setText("[data-i18n='collaboration.shopifyCta']", t.collaboration.shopifyCta);
+    const shop = document.querySelector<HTMLAnchorElement>("[data-i18n-attr='collaboration.shopify']");
+    if (shop)
+      shop.setAttribute(
+        "aria-label",
+        `${t.collaboration.shopifyCta}. ${t.collaboration.shopifyHint}`,
+      );
+
+    setText("[data-i18n='footer.contactLabel']", t.footer.contactLabel);
+    setText("[data-i18n='footer.designed']", t.footer.designed);
     setHtml(
       "[data-i18n='footer.rights']",
       `© ${new Date().getFullYear()} ${t.footer.rights}`,
     );
-    setText("[data-i18n='footer.instagramCta']", t.footer.instagramCta);
-    const ig = document.querySelector<HTMLAnchorElement>("[data-i18n-attr='footer.instagram']");
-    if (ig) ig.setAttribute("aria-label", `${t.footer.instagramCta}. ${t.footer.instagramHint}`);
 
-    setText("[data-i18n='footer.storeCta']", t.footer.storeCta);
-    const store = document.querySelector<HTMLAnchorElement>("[data-i18n-attr='footer.store']");
-    if (store) store.setAttribute("aria-label", `${t.footer.storeCta}. ${t.footer.storeHint}`);
+    const ig = document.querySelector<HTMLAnchorElement>("[data-i18n-attr='footer.instagram']");
+    if (ig) ig.setAttribute("aria-label", t.footer.instagramAria);
+
+    const mail = document.querySelector<HTMLAnchorElement>("[data-i18n-attr='footer.mail']");
+    if (mail) mail.setAttribute("aria-label", t.footer.mailAria);
 
     document.querySelectorAll(".lang-btn").forEach((btn) => {
       const code = btn.getAttribute("data-locale") as Locale;

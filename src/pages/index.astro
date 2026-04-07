@@ -5,241 +5,342 @@ import PencilDivider from "../components/PencilDivider.astro";
 import { translations, defaultLocale } from "../i18n/translations";
 
 const t = translations[defaultLocale];
-const ph = (n: string) =>
-  `https://placehold.co/600x400/ffffff/1a1a1a/png?text=${encodeURIComponent(n)}`;
-
-const gallerySrc = [
-  ph("Work 01"),
-  ph("Work 02"),
-  ph("Work 03"),
-  ph("Work 04"),
-  ph("Work 05"),
-  ph("Work 06"),
-];
-
-const storeUrl = "https://example.com/hygge-time-store";
+/** `.env`에 `PUBLIC_SHOPIFY_URL=https://…` 로 스토어 주소를 넣거나, 아래 기본값을 직접 수정하세요. */
+const shopifyUrl =
+  import.meta.env.PUBLIC_SHOPIFY_URL?.toString().trim() || "https://www.shopify.com";
 const instagramUrl = "https://www.instagram.com/sofiefribo_illustration/";
+const email = "sofiefribo.korea@gmail.com";
+
+/** 스토리 흐름용 이미지 플레이스홀더 — `/public/...` 실제 파일로 교체 가능 */
+const ph = (label: string, w: number, h: number) =>
+  `https://placehold.co/${w}x${h}/f9f8f6/333333/png?text=${encodeURIComponent(label)}`;
+
+const img = {
+  hero: ph("Hero · drawing hygge", 640, 800),
+  aboutBergenSeoul: ph("About · Bergen → Seoul", 960, 520),
+  aboutSketchbook: ph("Sketchbook · @sofiefribo", 960, 400),
+  career: ph("Career · timeline", 960, 320),
+  collabYut: ph("Hygge Time · yut", 520, 520),
+  collabNorigae: ph("Hygge Time · norigae", 520, 520),
+} as const;
 ---
 
 <Layout title={t.meta.title} description={t.meta.description}>
   <LanguageSwitcher />
 
-  <main>
+  <main class="text-ink">
+    <!-- 1. Hero -->
     <section
       id="hero"
-      class="relative flex min-h-[100svh] flex-col justify-end px-6 pb-12 pt-28 md:px-12 md:pb-20 lg:px-16"
+      class="flex min-h-[100svh] flex-col justify-end px-6 pb-16 pt-32 md:px-12 md:pb-24 md:pt-36 lg:px-16"
     >
-      <div class="relative max-w-4xl">
-        <p
-          class="mb-4 font-sans text-xs font-medium uppercase tracking-[0.28em] text-muted"
-          data-i18n="hero.eyebrow"
-        >
-          {t.hero.eyebrow}
-        </p>
-        <h1
-          class="font-serif text-4xl font-medium leading-[1.12] tracking-tight text-ink md:text-6xl lg:text-7xl"
-        >
-          <span data-i18n="hero.titleLine1">{t.hero.titleLine1}</span>
-          <br class="hidden sm:block" />
-          <span data-i18n="hero.titleLine2">{t.hero.titleLine2}</span>
-        </h1>
-        <p
-          class="mt-8 max-w-xl text-base leading-relaxed text-muted md:text-lg"
-          data-i18n="hero.lead"
-        >
-          {t.hero.lead}
-        </p>
-        <a
-          href="#gallery"
-          data-i18n-attr="hero.cta"
-          aria-label={`${t.hero.cta}. ${t.hero.ctaHint}`}
-          class="mt-10 inline-flex items-center gap-2 border border-ink px-5 py-3 text-sm font-medium text-ink transition hover:bg-smudge"
-        >
-          <span data-i18n="hero.cta">{t.hero.cta}</span>
-          <span aria-hidden="true" class="text-ink">↓</span>
-        </a>
-      </div>
-      <PencilDivider class="mt-16 max-w-3xl" />
-    </section>
-
-    <section id="gallery" class="px-6 py-16 md:px-12 md:py-24 lg:px-16">
-      <header
-        class="mb-12 flex flex-col gap-3 md:mb-16 md:flex-row md:items-end md:justify-between"
+      <div
+        class="mx-auto grid w-full max-w-5xl gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.88fr)] lg:items-end lg:gap-14"
       >
-        <div>
-          <h2
-            class="font-serif text-3xl font-medium text-ink md:text-4xl"
-            data-i18n="gallery.title"
+        <div class="min-w-0">
+          <h1
+            class="font-serif text-[clamp(1.75rem,4vw,3rem)] font-semibold leading-[1.15] tracking-tight text-ink"
+            data-i18n="hero.tagline"
           >
-            {t.gallery.title}
-          </h2>
-          <p class="mt-2 max-w-md text-sm text-muted" data-i18n="gallery.subtitle">
-            {t.gallery.subtitle}
+            {t.hero.tagline}
+          </h1>
+          <p
+            class="mt-8 font-serif text-2xl font-medium text-ink md:text-3xl"
+            data-i18n="hero.name"
+          >
+            {t.hero.name}
           </p>
+          <p
+            class="mt-2 font-sans text-base text-muted md:text-lg"
+            data-i18n="hero.role"
+          >
+            {t.hero.role}
+          </p>
+          <p class="mt-6">
+            <a
+              href={`mailto:${email}`}
+              class="font-sans text-sm text-ink underline decoration-ink/30 underline-offset-[6px] transition hover:decoration-ink"
+            >
+              {email}
+            </a>
+          </p>
+          <a
+            href="#about"
+            data-i18n-attr="hero.cta"
+            aria-label={`${t.hero.cta}. ${t.hero.ctaHint}`}
+            class="mt-12 inline-flex items-center gap-2 border border-ink/25 bg-canvas px-6 py-3 font-sans text-sm font-medium text-ink transition hover:bg-smudge"
+          >
+            <span data-i18n="hero.cta">{t.hero.cta}</span>
+            <span aria-hidden="true" class="text-muted">↓</span>
+          </a>
         </div>
-        <p
-          class="font-sans text-xs uppercase tracking-[0.3em] text-ink"
-          data-i18n="gallery.tag"
-        >
-          {t.gallery.tag}
-        </p>
-      </header>
-      <ul class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10">
-        {
-          gallerySrc.map((src, i) => (
-            <li>
-              <figure class="group">
-                <div class="relative p-[2px]">
-                  <svg
-                    class="pointer-events-none absolute inset-0 h-full w-full text-ink"
-                    preserveAspectRatio="none"
-                  >
-                    <path
-                      d="M2,3 C40,1 120,5 200,2 S400,4 598,2 S750,5 798,3 L798,298 C760,301 680,296 600,299 S400,297 202,299 S50,296 2,298 Z"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.1"
-                      vector-effect="non-scaling-stroke"
-                    />
-                  </svg>
-                  <img
-                    src={src}
-                    alt={t.gallery.captions[i]}
-                    width={600}
-                    height={400}
-                    loading="lazy"
-                    decoding="async"
-                    data-gallery-i={i}
-                    class="relative aspect-[3/2] w-full object-cover transition duration-500 group-hover:opacity-[0.97]"
-                  />
-                </div>
-                <figcaption
-                  class="mt-3 border-t border-dashed border-ink pt-3 text-xs text-ink"
-                  data-i18n={`gallery.caption${i}`}
-                >
-                  {t.gallery.captions[i]}
-                </figcaption>
-              </figure>
-            </li>
-          ))
-        }
-      </ul>
+        <figure class="min-w-0 lg:pb-1">
+          <div class="overflow-hidden rounded-sm border border-ink/10 bg-white/50 shadow-sm">
+            <img
+              src={img.hero}
+              alt=""
+              width={640}
+              height={800}
+              loading="eager"
+              decoding="async"
+              class="aspect-[4/5] w-full object-cover"
+            />
+          </div>
+          <figcaption class="mt-3 font-sans text-xs text-muted/90">
+            Placeholder — hero illustration or portrait
+          </figcaption>
+        </figure>
+      </div>
+      <PencilDivider class="mx-auto mt-20 max-w-5xl opacity-40" />
     </section>
 
-    <PencilDivider class="px-6 md:px-12 lg:px-16" />
-
-    <section id="about" class="px-6 py-16 md:px-12 md:py-24 lg:px-16">
-      <div class="mx-auto grid max-w-5xl gap-12 lg:grid-cols-[1fr_minmax(0,1.1fr)] lg:gap-16">
-        <div>
-          <h2
-            class="font-serif text-3xl font-medium text-ink md:text-4xl"
-            data-i18n="about.title"
-          >
-            {t.about.title}
-          </h2>
-          <div class="mt-5 w-full max-w-[4.5rem]" aria-hidden="true">
-            <PencilDivider />
-          </div>
+    <!-- 2. About (감성 서사) -->
+    <section id="about" class="px-6 py-20 md:px-12 md:py-28 lg:px-16">
+      <div class="mx-auto max-w-3xl">
+        <h2
+          class="font-serif text-3xl font-semibold text-ink md:text-4xl"
+          data-i18n="about.title"
+        >
+          {t.about.title}
+        </h2>
+        <div class="mt-6 max-w-[3.5rem] text-ink opacity-35" aria-hidden="true">
+          <PencilDivider />
         </div>
-        <div class="space-y-6 text-muted">
-          <p
-            class="font-serif text-xl leading-relaxed text-ink"
-            data-i18n="about.pullQuote"
-          >
-            {t.about.pullQuote}
-          </p>
-          <p class="leading-relaxed" data-i18n="about.p1">
-            {t.about.p1}
-          </p>
-          <p class="leading-relaxed" data-i18n="about.p2">
-            {t.about.p2}
-          </p>
+        <div class="mt-10 space-y-6 font-sans text-base leading-[1.75] text-muted md:text-lg">
+          <p data-i18n="about.p1">{t.about.p1}</p>
+        </div>
+
+        <figure class="mt-12">
+          <div class="overflow-hidden rounded-sm border border-ink/10 bg-white/50 shadow-sm">
+            <img
+              src={img.aboutBergenSeoul}
+              alt=""
+              width={960}
+              height={520}
+              loading="lazy"
+              decoding="async"
+              class="aspect-[16/9] w-full object-cover md:aspect-[12/5]"
+            />
+          </div>
+          <figcaption class="mt-3 font-sans text-xs text-muted/90">
+            Placeholder — studio, Korea scenes, or in-between chapter
+          </figcaption>
+        </figure>
+
+        <div class="mt-12 space-y-6 font-sans text-base leading-[1.75] text-muted md:text-lg">
+          <p data-i18n="about.p2">{t.about.p2}</p>
+        </div>
+
+        <figure class="mt-12">
+          <div class="overflow-hidden rounded-sm border border-ink/10 bg-white/50 shadow-sm">
+            <img
+              src={img.aboutSketchbook}
+              alt=""
+              width={960}
+              height={400}
+              loading="lazy"
+              decoding="async"
+              class="aspect-[21/9] w-full object-cover md:aspect-[24/9]"
+            />
+          </div>
+          <figcaption class="mt-3 font-sans text-xs text-muted/90">
+            Placeholder — essay, spreads, or Instagram sketch rhythm
+          </figcaption>
+        </figure>
+
+        <div class="mt-12 font-sans text-base leading-[1.75] text-muted md:text-lg">
+          <p data-i18n="about.p3">{t.about.p3}</p>
         </div>
       </div>
     </section>
 
-    <PencilDivider class="px-6 md:px-12 lg:px-16" />
+    <PencilDivider class="mx-auto max-w-3xl px-6 opacity-30 md:px-12 lg:px-16" />
 
-    <section id="cv" class="px-6 py-16 md:px-12 md:py-24 lg:px-16">
-      <div class="mx-auto grid max-w-5xl gap-12 lg:grid-cols-[1fr_minmax(0,1.1fr)] lg:gap-16">
-        <div>
-          <h2
-            class="font-serif text-3xl font-medium text-ink md:text-4xl"
-            data-i18n="cv.title"
-          >
-            {t.cv.title}
-          </h2>
-          <div class="mt-5 w-full max-w-[4.5rem]" aria-hidden="true">
-            <PencilDivider />
+    <!-- 3. Career — accordion -->
+    <section id="career" class="px-6 py-20 md:px-12 md:py-28 lg:px-16">
+      <div class="mx-auto max-w-3xl">
+        <h2
+          class="font-serif text-3xl font-semibold text-ink md:text-4xl"
+          data-i18n="career.title"
+        >
+          {t.career.title}
+        </h2>
+        <p class="mt-3 font-sans text-sm text-muted" data-i18n="career.hint">
+          {t.career.hint}
+        </p>
+
+        <figure class="mt-10">
+          <div class="overflow-hidden rounded-sm border border-ink/10 bg-white/50 shadow-sm">
+            <img
+              src={img.career}
+              alt=""
+              width={960}
+              height={320}
+              loading="lazy"
+              decoding="async"
+              class="aspect-[3/1] w-full object-cover"
+            />
           </div>
-        </div>
-        <div id="cv-dynamic">
-          <div class="space-y-3 border-b border-dashed border-ink pb-10 text-muted">
-            <p class="font-serif text-xl text-ink">{t.cv.introName}</p>
-            <p>
-              <a
-                href="mailto:sofiefribo.korea@gmail.com"
-                class="text-ink underline decoration-ink decoration-1 underline-offset-[5px] transition hover:opacity-80"
-              >
-                sofiefribo.korea@gmail.com
-              </a>
-            </p>
-            <p class="leading-relaxed">{t.cv.introRoles}</p>
-            <p class="leading-relaxed">{t.cv.introEducation}</p>
-          </div>
+          <figcaption class="mt-3 font-sans text-xs text-muted/90">
+            Placeholder — workshops, exhibitions, or archive mood
+          </figcaption>
+        </figure>
+
+        <div id="career-accordion" class="mt-12 border-t border-ink/10">
           {
-            t.cv.blocks.map((block) => (
-              <section class="mb-10 border-b border-dashed border-ink pb-10 last:mb-0 last:border-b-0 last:pb-0">
-                <h3 class="mb-4 font-sans text-xs font-semibold uppercase tracking-[0.2em] text-ink">
-                  {block.year}
-                </h3>
-                <ul class="list-disc space-y-2 pl-5 leading-relaxed text-muted">
-                  {block.items.map((item) => (
-                    <li>{item}</li>
-                  ))}
-                </ul>
-              </section>
+            t.career.blocks.map((block) => (
+              <details class="group border-b border-ink/10">
+                <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-5 outline-none [&::-webkit-details-marker]:hidden">
+                  <span class="font-serif text-lg font-medium tracking-tight text-ink md:text-xl">
+                    {block.year}
+                  </span>
+                  <span
+                    class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-ink/15 text-muted transition-transform duration-200 group-open:rotate-180"
+                    aria-hidden="true"
+                  >
+                    ↓
+                  </span>
+                </summary>
+                <div class="border-t border-line bg-smudge/50 px-1 py-5 md:px-3">
+                  <ul class="list-disc space-y-2.5 pl-5 font-sans text-sm leading-relaxed text-muted md:text-[15px]">
+                    {block.items.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </details>
             ))
           }
         </div>
       </div>
     </section>
 
-    <footer class="border-t border-dashed border-ink px-6 py-14 md:px-12 md:py-20 lg:px-16">
-      <div
-        class="mx-auto flex max-w-5xl flex-col gap-10 md:flex-row md:items-start md:justify-between"
-      >
-        <div class="space-y-4">
-          <p class="font-serif text-xl text-ink" data-i18n="footer.brand">
-            {t.footer.brand}
-          </p>
-          <a
-            href={instagramUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-i18n-attr="footer.instagram"
-            data-i18n="footer.instagramCta"
-            aria-label={`${t.footer.instagramCta}. ${t.footer.instagramHint}`}
-            class="inline-block font-sans text-sm text-ink underline decoration-ink decoration-1 underline-offset-[5px]"
+    <PencilDivider class="mx-auto max-w-3xl px-6 opacity-30 md:px-12 lg:px-16" />
+
+    <!-- 4. Hygge Time -->
+    <section id="collaboration" class="px-6 py-20 md:px-12 md:py-28 lg:px-16">
+      <div class="mx-auto max-w-3xl rounded-sm border border-ink/10 bg-white/40 p-8 shadow-sm md:p-12">
+        <p class="font-sans text-xs font-semibold uppercase tracking-[0.2em] text-muted">
+          Hygge Time
+        </p>
+        <h2
+          class="mt-3 font-serif text-3xl font-semibold text-ink md:text-4xl"
+          data-i18n="collaboration.title"
+        >
+          {t.collaboration.title}
+        </h2>
+        <p
+          class="mt-4 font-serif text-xl text-ink md:text-2xl"
+          data-i18n="collaboration.role"
+        >
+          {t.collaboration.role}
+        </p>
+
+        <div class="mt-10 grid gap-4 sm:grid-cols-2">
+          <figure class="min-w-0">
+            <div class="overflow-hidden rounded-sm border border-ink/10 bg-white/60 shadow-sm">
+              <img
+                src={img.collabYut}
+                alt=""
+                width={520}
+                height={520}
+                loading="lazy"
+                decoding="async"
+                class="aspect-square w-full object-cover"
+              />
+            </div>
+            <figcaption class="mt-2 font-sans text-xs text-muted/90">
+              Placeholder — yut / board games
+            </figcaption>
+          </figure>
+          <figure class="min-w-0">
+            <div class="overflow-hidden rounded-sm border border-ink/10 bg-white/60 shadow-sm">
+              <img
+                src={img.collabNorigae}
+                alt=""
+                width={520}
+                height={520}
+                loading="lazy"
+                decoding="async"
+                class="aspect-square w-full object-cover"
+              />
+            </div>
+            <figcaption class="mt-2 font-sans text-xs text-muted/90">
+              Placeholder — norigae keyrings &amp; objects
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="mt-10 space-y-5 font-sans text-base leading-[1.75] text-muted md:text-lg">
+          <p data-i18n="collaboration.p1">{t.collaboration.p1}</p>
+          <p data-i18n="collaboration.p2">{t.collaboration.p2}</p>
+        </div>
+        <a
+          href={shopifyUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-i18n-attr="collaboration.shopify"
+          data-i18n="collaboration.shopifyCta"
+          aria-label={`${t.collaboration.shopifyCta}. ${t.collaboration.shopifyHint}`}
+          class="mt-10 inline-flex w-full items-center justify-center border border-ink bg-ink px-8 py-4 text-center font-sans text-sm font-semibold text-canvas transition hover:bg-ink/90 md:w-auto"
+        >
+          {t.collaboration.shopifyCta}
+        </a>
+      </div>
+    </section>
+
+    <!-- 5. Footer -->
+    <footer class="border-t border-ink/10 px-6 py-16 md:px-12 md:py-20 lg:px-16">
+      <div class="mx-auto flex max-w-3xl flex-col gap-10 md:flex-row md:items-start md:justify-between">
+        <div>
+          <p
+            class="font-sans text-xs font-semibold uppercase tracking-[0.2em] text-muted"
+            data-i18n="footer.contactLabel"
           >
-            {t.footer.instagramCta}
-          </a>
-          <p class="text-sm text-muted" data-i18n="footer.rights">
+            {t.footer.contactLabel}
+          </p>
+          <div class="mt-5 flex flex-wrap items-center gap-5">
+            <a
+              href={`mailto:${email}`}
+              class="inline-flex items-center gap-2 text-ink transition hover:opacity-70"
+              aria-label={t.footer.mailAria}
+              data-i18n-attr="footer.mail"
+            >
+              <svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M4 6h16v12H4V6zm0 0l8 6 8-6"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></path>
+              </svg>
+              <span class="font-sans text-sm">{email}</span>
+            </a>
+            <a
+              href={instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 text-ink transition hover:opacity-70"
+              aria-label={t.footer.instagramAria}
+              data-i18n-attr="footer.instagram"
+            >
+              <svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path
+                  d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"
+                ></path>
+              </svg>
+              <span class="font-sans text-sm">@sofiefribo_illustration</span>
+            </a>
+          </div>
+        </div>
+        <div class="flex flex-col gap-3 md:text-right">
+          <p class="font-serif text-sm italic text-muted" data-i18n="footer.designed">
+            {t.footer.designed}
+          </p>
+          <p class="font-sans text-xs text-muted/80" data-i18n="footer.rights">
             © {new Date().getFullYear()}
             {t.footer.rights}
           </p>
-        </div>
-        <div class="flex w-full flex-col gap-3 md:w-auto md:min-w-[260px]">
-          <a
-            href={storeUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-i18n-attr="footer.store"
-            aria-label={`${t.footer.storeCta}. ${t.footer.storeHint}`}
-            class="inline-flex w-full items-center justify-center border border-ink bg-canvas px-8 py-3.5 text-center text-sm font-medium text-ink transition hover:bg-smudge focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
-          >
-            <span data-i18n="footer.storeCta">{t.footer.storeCta}</span>
-          </a>
         </div>
       </div>
     </footer>
