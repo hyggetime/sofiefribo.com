@@ -158,6 +158,53 @@ const instagramUrl = "https://www.instagram.com/sofiefribo_illustration/";
       </div>
     </section>
 
+    <PencilDivider class="px-6 md:px-12 lg:px-16" />
+
+    <section id="cv" class="px-6 py-16 md:px-12 md:py-24 lg:px-16">
+      <div class="mx-auto grid max-w-5xl gap-12 lg:grid-cols-[1fr_minmax(0,1.1fr)] lg:gap-16">
+        <div>
+          <h2
+            class="font-serif text-3xl font-medium text-ink md:text-4xl"
+            data-i18n="cv.title"
+          >
+            {t.cv.title}
+          </h2>
+          <div class="mt-5 w-full max-w-[4.5rem]" aria-hidden="true">
+            <PencilDivider />
+          </div>
+        </div>
+        <div id="cv-dynamic">
+          <div class="space-y-3 border-b border-dashed border-ink pb-10 text-muted">
+            <p class="font-serif text-xl text-ink">{t.cv.introName}</p>
+            <p>
+              <a
+                href="mailto:sofiefribo.korea@gmail.com"
+                class="text-ink underline decoration-ink decoration-1 underline-offset-[5px] transition hover:opacity-80"
+              >
+                sofiefribo.korea@gmail.com
+              </a>
+            </p>
+            <p class="leading-relaxed">{t.cv.introRoles}</p>
+            <p class="leading-relaxed">{t.cv.introEducation}</p>
+          </div>
+          {
+            t.cv.blocks.map((block) => (
+              <section class="mb-10 border-b border-dashed border-ink pb-10 last:mb-0 last:border-b-0 last:pb-0">
+                <h3 class="mb-4 font-sans text-xs font-semibold uppercase tracking-[0.2em] text-ink">
+                  {block.year}
+                </h3>
+                <ul class="list-disc space-y-2 pl-5 leading-relaxed text-muted">
+                  {block.items.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
     <footer class="border-t border-dashed border-ink px-6 py-14 md:px-12 md:py-20 lg:px-16">
       <div
         class="mx-auto flex max-w-5xl flex-col gap-10 md:flex-row md:items-start md:justify-between"

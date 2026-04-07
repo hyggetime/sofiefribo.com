@@ -42,6 +42,75 @@ const locales: Locale[] = ["en", "da", "ko"];
     });
   }
 
+  type CvBlock = { year: string; items: string[] };
+  type CvCopy = {
+    introName: string;
+    introRoles: string;
+    introEducation: string;
+    blocks: CvBlock[];
+  };
+
+  function renderCv(cv: CvCopy) {
+    const root = document.getElementById("cv-dynamic");
+    if (!root) return;
+
+    root.replaceChildren();
+
+    const introWrap = document.createElement("div");
+    introWrap.className = "space-y-3 border-b border-dashed border-ink pb-10 text-muted";
+
+    const nameEl = document.createElement("p");
+    nameEl.className = "font-serif text-xl text-ink";
+    nameEl.textContent = cv.introName;
+    introWrap.appendChild(nameEl);
+
+    const emailP = document.createElement("p");
+    const emailA = document.createElement("a");
+    emailA.href = "mailto:sofiefribo.korea@gmail.com";
+    emailA.className =
+      "text-ink underline decoration-ink decoration-1 underline-offset-[5px] transition hover:opacity-80";
+    emailA.textContent = "sofiefribo.korea@gmail.com";
+    emailP.appendChild(emailA);
+    introWrap.appendChild(emailP);
+
+    const rolesEl = document.createElement("p");
+    rolesEl.className = "leading-relaxed";
+    rolesEl.textContent = cv.introRoles;
+    introWrap.appendChild(rolesEl);
+
+    const eduEl = document.createElement("p");
+    eduEl.className = "leading-relaxed";
+    eduEl.textContent = cv.introEducation;
+    introWrap.appendChild(eduEl);
+
+    root.appendChild(introWrap);
+
+    const n = cv.blocks.length;
+    cv.blocks.forEach((block, i) => {
+      const section = document.createElement("section");
+      const isLast = i === n - 1;
+      section.className = isLast
+        ? "mb-0 border-b-0 pb-0"
+        : "mb-10 border-b border-dashed border-ink pb-10";
+
+      const h3 = document.createElement("h3");
+      h3.className =
+        "mb-4 font-sans text-xs font-semibold uppercase tracking-[0.2em] text-ink";
+      h3.textContent = block.year;
+      section.appendChild(h3);
+
+      const ul = document.createElement("ul");
+      ul.className = "list-disc space-y-2 pl-5 leading-relaxed text-muted";
+      for (const item of block.items) {
+        const li = document.createElement("li");
+        li.textContent = item;
+        ul.appendChild(li);
+      }
+      section.appendChild(ul);
+      root.appendChild(section);
+    });
+  }
+
   function applyLocale(locale: Locale) {
     const t = translations[locale];
     document.documentElement.lang = locale === "ko" ? "ko" : locale === "da" ? "da" : "en";
@@ -72,6 +141,9 @@ const locales: Locale[] = ["en", "da", "ko"];
     setText("[data-i18n='about.pullQuote']", t.about.pullQuote);
     setText("[data-i18n='about.p1']", t.about.p1);
     setText("[data-i18n='about.p2']", t.about.p2);
+
+    setText("[data-i18n='cv.title']", t.cv.title);
+    renderCv(t.cv);
 
     setText("[data-i18n='footer.brand']", t.footer.brand);
     setHtml(
