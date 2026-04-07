@@ -1,0 +1,200 @@
+---
+import Layout from "../layouts/Layout.astro";
+import LanguageSwitcher from "../components/LanguageSwitcher.astro";
+import PencilDivider from "../components/PencilDivider.astro";
+import { translations, defaultLocale } from "../i18n/translations";
+
+const t = translations[defaultLocale];
+const ph = (n: string) =>
+  `https://placehold.co/600x400/ffffff/1a1a1a/png?text=${encodeURIComponent(n)}`;
+
+const gallerySrc = [
+  ph("Work 01"),
+  ph("Work 02"),
+  ph("Work 03"),
+  ph("Work 04"),
+  ph("Work 05"),
+  ph("Work 06"),
+];
+
+const storeUrl = "https://example.com/hygge-time-store";
+const instagramUrl = "https://www.instagram.com/sofiefribo_illustration/";
+---
+
+<Layout title={t.meta.title} description={t.meta.description}>
+  <LanguageSwitcher />
+
+  <main>
+    <section
+      id="hero"
+      class="relative flex min-h-[100svh] flex-col justify-end px-6 pb-12 pt-28 md:px-12 md:pb-20 lg:px-16"
+    >
+      <div class="relative max-w-4xl">
+        <p
+          class="mb-4 font-sans text-xs font-medium uppercase tracking-[0.28em] text-muted"
+          data-i18n="hero.eyebrow"
+        >
+          {t.hero.eyebrow}
+        </p>
+        <h1
+          class="font-serif text-4xl font-medium leading-[1.12] tracking-tight text-ink md:text-6xl lg:text-7xl"
+        >
+          <span data-i18n="hero.titleLine1">{t.hero.titleLine1}</span>
+          <br class="hidden sm:block" />
+          <span data-i18n="hero.titleLine2">{t.hero.titleLine2}</span>
+        </h1>
+        <p
+          class="mt-8 max-w-xl text-base leading-relaxed text-muted md:text-lg"
+          data-i18n="hero.lead"
+        >
+          {t.hero.lead}
+        </p>
+        <a
+          href="#gallery"
+          data-i18n-attr="hero.cta"
+          aria-label={`${t.hero.cta}. ${t.hero.ctaHint}`}
+          class="mt-10 inline-flex items-center gap-2 border border-ink px-5 py-3 text-sm font-medium text-ink transition hover:bg-smudge"
+        >
+          <span data-i18n="hero.cta">{t.hero.cta}</span>
+          <span aria-hidden="true" class="text-ink">↓</span>
+        </a>
+      </div>
+      <PencilDivider class="mt-16 max-w-3xl" />
+    </section>
+
+    <section id="gallery" class="px-6 py-16 md:px-12 md:py-24 lg:px-16">
+      <header
+        class="mb-12 flex flex-col gap-3 md:mb-16 md:flex-row md:items-end md:justify-between"
+      >
+        <div>
+          <h2
+            class="font-serif text-3xl font-medium text-ink md:text-4xl"
+            data-i18n="gallery.title"
+          >
+            {t.gallery.title}
+          </h2>
+          <p class="mt-2 max-w-md text-sm text-muted" data-i18n="gallery.subtitle">
+            {t.gallery.subtitle}
+          </p>
+        </div>
+        <p
+          class="font-sans text-xs uppercase tracking-[0.3em] text-ink"
+          data-i18n="gallery.tag"
+        >
+          {t.gallery.tag}
+        </p>
+      </header>
+      <ul class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10">
+        {
+          gallerySrc.map((src, i) => (
+            <li>
+              <figure class="group">
+                <div class="relative p-[2px]">
+                  <svg
+                    class="pointer-events-none absolute inset-0 h-full w-full text-ink"
+                    preserveAspectRatio="none"
+                  >
+                    <path
+                      d="M2,3 C40,1 120,5 200,2 S400,4 598,2 S750,5 798,3 L798,298 C760,301 680,296 600,299 S400,297 202,299 S50,296 2,298 Z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.1"
+                      vector-effect="non-scaling-stroke"
+                    />
+                  </svg>
+                  <img
+                    src={src}
+                    alt={t.gallery.captions[i]}
+                    width={600}
+                    height={400}
+                    loading="lazy"
+                    decoding="async"
+                    data-gallery-i={i}
+                    class="relative aspect-[3/2] w-full object-cover transition duration-500 group-hover:opacity-[0.97]"
+                  />
+                </div>
+                <figcaption
+                  class="mt-3 border-t border-dashed border-ink pt-3 text-xs text-ink"
+                  data-i18n={`gallery.caption${i}`}
+                >
+                  {t.gallery.captions[i]}
+                </figcaption>
+              </figure>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <PencilDivider class="px-6 md:px-12 lg:px-16" />
+
+    <section id="about" class="px-6 py-16 md:px-12 md:py-24 lg:px-16">
+      <div class="mx-auto grid max-w-5xl gap-12 lg:grid-cols-[1fr_minmax(0,1.1fr)] lg:gap-16">
+        <div>
+          <h2
+            class="font-serif text-3xl font-medium text-ink md:text-4xl"
+            data-i18n="about.title"
+          >
+            {t.about.title}
+          </h2>
+          <div class="mt-5 w-full max-w-[4.5rem]" aria-hidden="true">
+            <PencilDivider />
+          </div>
+        </div>
+        <div class="space-y-6 text-muted">
+          <p
+            class="font-serif text-xl leading-relaxed text-ink"
+            data-i18n="about.pullQuote"
+          >
+            {t.about.pullQuote}
+          </p>
+          <p class="leading-relaxed" data-i18n="about.p1">
+            {t.about.p1}
+          </p>
+          <p class="leading-relaxed" data-i18n="about.p2">
+            {t.about.p2}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="border-t border-dashed border-ink px-6 py-14 md:px-12 md:py-20 lg:px-16">
+      <div
+        class="mx-auto flex max-w-5xl flex-col gap-10 md:flex-row md:items-start md:justify-between"
+      >
+        <div class="space-y-4">
+          <p class="font-serif text-xl text-ink" data-i18n="footer.brand">
+            {t.footer.brand}
+          </p>
+          <a
+            href={instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-i18n-attr="footer.instagram"
+            data-i18n="footer.instagramCta"
+            aria-label={`${t.footer.instagramCta}. ${t.footer.instagramHint}`}
+            class="inline-block font-sans text-sm text-ink underline decoration-ink decoration-1 underline-offset-[5px]"
+          >
+            {t.footer.instagramCta}
+          </a>
+          <p class="text-sm text-muted" data-i18n="footer.rights">
+            © {new Date().getFullYear()}
+            {t.footer.rights}
+          </p>
+        </div>
+        <div class="flex w-full flex-col gap-3 md:w-auto md:min-w-[260px]">
+          <a
+            href={storeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-i18n-attr="footer.store"
+            aria-label={`${t.footer.storeCta}. ${t.footer.storeHint}`}
+            class="inline-flex w-full items-center justify-center border border-ink bg-canvas px-8 py-3.5 text-center text-sm font-medium text-ink transition hover:bg-smudge focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
+          >
+            <span data-i18n="footer.storeCta">{t.footer.storeCta}</span>
+          </a>
+        </div>
+      </div>
+    </footer>
+  </main>
+</Layout>

@@ -1,0 +1,41 @@
+---
+/** 가로 연필 느낌: 굵기·기복이 있는 스케치 라인 (밝은 종이 위 그래파이트) */
+interface Props {
+  flip?: boolean;
+  class?: string;
+}
+const { flip = false, class: className = "" } = Astro.props;
+const yBase = flip ? 6 : 4;
+---
+
+<div class:list={["w-full text-ink", className]} aria-hidden="true">
+  <svg
+    class="h-8 w-full"
+    viewBox="0 0 800 16"
+    preserveAspectRatio="none"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d={`M0,${yBase} C120,${yBase - 1.5} 200,${yBase + 2} 320,${yBase - 0.5} S520,${yBase + 1.8} 640,${yBase - 1} S740,${yBase + 0.5} 800,${yBase}`}
+      stroke="currentColor"
+      stroke-width="1.35"
+      stroke-linecap="round"
+      vector-effect="non-scaling-stroke"
+      opacity="1"></path>
+    <path
+      d={`M12,${yBase + 0.8} C160,${yBase - 0.2} 280,${yBase + 2.2} 400,${yBase + 0.3} S580,${yBase - 1.2} 788,${yBase + 0.4}`}
+      stroke="currentColor"
+      stroke-width="0.45"
+      stroke-linecap="round"
+      vector-effect="non-scaling-stroke"
+      opacity="0.9"></path>
+    <path
+      d={`M40,${yBase - 0.6} Q200,${yBase + 2.8} 420,${yBase - 0.2} T780,${yBase + 0.9}`}
+      stroke="currentColor"
+      stroke-width="0.7"
+      stroke-linecap="round"
+      vector-effect="non-scaling-stroke"
+      opacity="0.9"></path>
+  </svg>
+</div>

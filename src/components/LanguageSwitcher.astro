@@ -1,0 +1,126 @@
+---
+import { defaultLocale, type Locale } from "../i18n/translations";
+
+const locales: Locale[] = ["en", "da", "ko"];
+---
+
+<div
+  class="fixed right-4 top-4 z-50 flex items-center gap-0.5 border border-ink bg-canvas px-0.5 py-0.5 md:right-6 md:top-6"
+  role="navigation"
+  aria-label="Language"
+>
+  {
+    locales.map((code) => (
+      <button
+        type="button"
+        class="lang-btn px-2.5 py-1.5 font-sans text-[11px] font-medium uppercase tracking-wider text-muted transition hover:text-ink data-[active]:bg-smudge data-[active]:text-ink"
+        data-locale={code}
+        aria-pressed="false"
+      >
+        {code}
+      </button>
+    ))
+  }
+</div>
+
+<script>
+  import { defaultLocale, translations } from "../i18n/translations";
+
+  const STORAGE_KEY = "sofiefribo.locale";
+
+  type Locale = "en" | "da" | "ko";
+
+  function setText(selector: string, value: string) {
+    document.querySelectorAll<HTMLElement>(selector).forEach((el) => {
+      el.textContent = value;
+    });
+  }
+
+  function setHtml(selector: string, value: string) {
+    document.querySelectorAll<HTMLElement>(selector).forEach((el) => {
+      el.innerHTML = value;
+    });
+  }
+
+  function applyLocale(locale: Locale) {
+    const t = translations[locale];
+    document.documentElement.lang = locale === "ko" ? "ko" : locale === "da" ? "da" : "en";
+
+    document.title = t.meta.title;
+    const md = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    if (md) md.content = t.meta.description;
+
+    setText("[data-i18n='hero.eyebrow']", t.hero.eyebrow);
+    setText("[data-i18n='hero.titleLine1']", t.hero.titleLine1);
+    setText("[data-i18n='hero.titleLine2']", t.hero.titleLine2);
+    setText("[data-i18n='hero.lead']", t.hero.lead);
+    setText("[data-i18n='hero.cta']", t.hero.cta);
+    const ctaLink = document.querySelector<HTMLAnchorElement>("[data-i18n-attr='hero.cta']");
+    if (ctaLink) ctaLink.setAttribute("aria-label", `${t.hero.cta}. ${t.hero.ctaHint}`);
+
+    setText("[data-i18n='gallery.title']", t.gallery.title);
+    setText("[data-i18n='gallery.subtitle']", t.gallery.subtitle);
+    setText("[data-i18n='gallery.tag']", t.gallery.tag);
+    t.gallery.captions.forEach((cap, i) => {
+      setText(`[data-i18n='gallery.caption${i}']`, cap);
+      document.querySelectorAll(`img[data-gallery-i="${i}"]`).forEach((img) => {
+        img.setAttribute("alt", cap);
+      });
+    });
+
+    setText("[data-i18n='about.title']", t.about.title);
+    setText("[data-i18n='about.pullQuote']", t.about.pullQuote);
+    setText("[data-i18n='about.p1']", t.about.p1);
+    setText("[data-i18n='about.p2']", t.about.p2);
+
+    setText("[data-i18n='footer.brand']", t.footer.brand);
+    setHtml(
+      "[data-i18n='footer.rights']",
+      `© ${new Date().getFullYear()} ${t.footer.rights}`,
+    );
+    setText("[data-i18n='footer.instagramCta']", t.footer.instagramCta);
+    const ig = document.querySelector<HTMLAnchorElement>("[data-i18n-attr='footer.instagram']");
+    if (ig) ig.setAttribute("aria-label", `${t.footer.instagramCta}. ${t.footer.instagramHint}`);
+
+    setText("[data-i18n='footer.storeCta']", t.footer.storeCta);
+    const store = document.querySelector<HTMLAnchorElement>("[data-i18n-attr='footer.store']");
+    if (store) store.setAttribute("aria-label", `${t.footer.storeCta}. ${t.footer.storeHint}`);
+
+    document.querySelectorAll(".lang-btn").forEach((btn) => {
+      const code = btn.getAttribute("data-locale") as Locale;
+      const on = code === locale;
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+      btn.toggleAttribute("data-active", on);
+    });
+
+    try {
+      localStorage.setItem(STORAGE_KEY, locale);
+    } catch {
+      /* private mode */
+    }
+  }
+
+  function readStored(): Locale | null {
+    try {
+      const v = localStorage.getItem(STORAGE_KEY);
+      if (v === "en" || v === "da" || v === "ko") return v;
+    } catch {
+      /* ignore */
+    }
+    return null;
+  }
+
+  function init() {
+    const stored = readStored();
+    applyLocale(stored ?? defaultLocale);
+
+    document.querySelectorAll(".lang-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const code = btn.getAttribute("data-locale") as Locale;
+        applyLocale(code);
+      });
+    });
+  }
+
+  init();
+</script>
