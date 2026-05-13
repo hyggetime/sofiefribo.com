@@ -1,0 +1,24 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+export function getStaticPaths() {
+  return ["1", "2", "3", "4", "5", "6"].map((id) => ({ params: { id } }));
+}
+
+const { id } = Astro.params;
+---
+
+<Layout title={`Project ${id} — Sofie Fribo`} description="Project detail placeholder.">
+  <main class="min-h-screen bg-white px-6 py-16 text-neutral-900">
+    <div class="mx-auto max-w-lg">
+      <a href="/#projects" class="text-sm font-medium underline decoration-neutral-400 underline-offset-4 hover:decoration-black">
+        ← Back to projects
+      </a>
+      <h1 class="mt-10 text-3xl font-bold tracking-tight">Project {id}</h1>
+      <p class="mt-4 text-neutral-600">
+        Empty placeholder page. Replace this route with real case studies, galleries, or CMS-driven project
+        pages when content is ready.
+      </p>
+    </div>
+  </main>
+</Layout>

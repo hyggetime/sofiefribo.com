@@ -5,7 +5,7 @@ const locales: Locale[] = ["en", "da", "ko"];
 ---
 
 <div
-  class="fixed right-4 top-4 z-50 flex items-center gap-0.5 border border-ink/15 bg-canvas/95 px-0.5 py-0.5 shadow-sm backdrop-blur-sm md:right-6 md:top-6"
+  class="fixed right-4 top-4 z-[60] flex items-center gap-0.5 border-2 border-black bg-white px-0.5 py-0.5 shadow-sm md:right-6 md:top-6"
   role="navigation"
   aria-label="Language"
 >
@@ -13,7 +13,7 @@ const locales: Locale[] = ["en", "da", "ko"];
     locales.map((code) => (
       <button
         type="button"
-        class="lang-btn px-2.5 py-1.5 font-sans text-[11px] font-medium uppercase tracking-wider text-muted transition hover:text-ink data-[active]:bg-smudge data-[active]:text-ink"
+        class="lang-btn px-2.5 py-1.5 font-sans text-[11px] font-medium uppercase tracking-wider text-neutral-600 transition hover:text-black data-[active]:bg-black data-[active]:text-white"
         data-locale={code}
         aria-pressed="false"
       >
@@ -52,32 +52,32 @@ const locales: Locale[] = ["en", "da", "ko"];
 
     for (const block of blocks) {
       const details = document.createElement("details");
-      details.className = "group border-b border-ink/10";
+      details.className = "group border-b border-neutral-300";
 
       const summary = document.createElement("summary");
       summary.className =
-        "flex cursor-pointer list-none items-center justify-between gap-4 py-5 outline-none [&::-webkit-details-marker]:hidden";
+        "flex cursor-pointer list-none items-center justify-between gap-4 py-4 outline-none [&::-webkit-details-marker]:hidden";
 
       const yearSpan = document.createElement("span");
       yearSpan.className =
-        "font-serif text-lg font-medium tracking-tight text-ink md:text-xl";
+        "font-sans text-[15px] font-semibold tracking-tight text-neutral-900 md:text-base";
       yearSpan.textContent = block.year;
 
       const chev = document.createElement("span");
       chev.className =
-        "inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-ink/15 text-muted transition-transform duration-200 group-open:rotate-180";
+        "shrink-0 font-mono text-[10px] font-medium uppercase tracking-wide text-neutral-500";
       chev.setAttribute("aria-hidden", "true");
-      chev.textContent = "↓";
+      chev.textContent = "[+]";
 
       summary.appendChild(yearSpan);
       summary.appendChild(chev);
 
       const panel = document.createElement("div");
-      panel.className = "border-t border-line bg-smudge/50 px-1 py-5 md:px-3";
+      panel.className = "border-t border-neutral-200 bg-neutral-50 px-1 py-4 md:px-3";
 
       const ul = document.createElement("ul");
       ul.className =
-        "list-disc space-y-2.5 pl-5 font-sans text-sm leading-relaxed text-muted md:text-[15px]";
+        "list-disc space-y-2 pl-5 font-sans text-sm leading-relaxed text-neutral-600 md:text-[15px]";
       for (const item of block.items) {
         const li = document.createElement("li");
         li.textContent = item;
@@ -99,12 +99,16 @@ const locales: Locale[] = ["en", "da", "ko"];
     const md = document.querySelector<HTMLMetaElement>('meta[name="description"]');
     if (md) md.content = t.meta.description;
 
-    setText("[data-i18n='hero.tagline']", t.hero.tagline);
+    setText("[data-i18n='landing.hello']", t.landing.hello);
+    setText("[data-i18n='landing.basedIn']", t.landing.basedIn);
+    setText("[data-i18n='landing.location']", t.landing.location);
+    setText("[data-i18n='landing.heroBlurb']", t.landing.heroBlurb);
+
+    setText("[data-i18n='archive.title']", t.archive.title);
+    setText("[data-i18n='archive.subtitle']", t.archive.subtitle);
+
     setText("[data-i18n='hero.name']", t.hero.name);
     setText("[data-i18n='hero.role']", t.hero.role);
-    setText("[data-i18n='hero.cta']", t.hero.cta);
-    const heroCta = document.querySelector<HTMLAnchorElement>("[data-i18n-attr='hero.cta']");
-    if (heroCta) heroCta.setAttribute("aria-label", `${t.hero.cta}. ${t.hero.ctaHint}`);
 
     setText("[data-i18n='about.title']", t.about.title);
     setText("[data-i18n='about.p1']", t.about.p1);

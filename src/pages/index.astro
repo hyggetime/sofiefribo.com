@@ -1,277 +1,351 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import LanguageSwitcher from "../components/LanguageSwitcher.astro";
-import PencilDivider from "../components/PencilDivider.astro";
+import ImageSizeBadge from "../components/ImageSizeBadge.astro";
 import { translations, defaultLocale } from "../i18n/translations";
+import { EXPERIENCE_PANELS, SKILL_LABELS } from "../data/experiencePanels";
 
 const t = translations[defaultLocale];
-/** `.env`에 `PUBLIC_SHOPIFY_URL=https://…` 로 스토어 주소를 넣거나, 아래 기본값을 직접 수정하세요. */
 const shopifyUrl =
   import.meta.env.PUBLIC_SHOPIFY_URL?.toString().trim() || "https://www.shopify.com";
 const instagramUrl = "https://www.instagram.com/sofiefribo_illustration/";
 const email = "sofiefribo.korea@gmail.com";
 
-/** 스토리 흐름용 이미지 플레이스홀더 — `/public/...` 실제 파일로 교체 가능 */
+/** 권장 에셋 크기(px) — placehold·배지·width/height와 동기 */
+const imgDims = {
+  hero: { w: 720, h: 720 },
+  about: { w: 720, h: 720 },
+  skillIcon: { w: 112, h: 112 },
+  project: { w: 800, h: 600 },
+  avatar: { w: 128, h: 128 },
+} as const;
+
 const ph = (label: string, w: number, h: number) =>
-  `https://placehold.co/${w}x${h}/f9f8f6/333333/png?text=${encodeURIComponent(label)}`;
+  `https://placehold.co/${w}x${h}/ffffff/171717/png?text=${encodeURIComponent(label)}`;
 
 const img = {
-  hero: ph("Hero · drawing hygge", 640, 800),
-  aboutBergenSeoul: ph("About · Bergen → Seoul", 960, 520),
-  aboutSketchbook: ph("Sketchbook · @sofiefribo", 960, 400),
-  career: ph("Career · timeline", 960, 320),
-  collabYut: ph("Hygge Time · yut", 520, 520),
-  collabNorigae: ph("Hygge Time · norigae", 520, 520),
+  heroIllustration: ph("Hero · line illustration", imgDims.hero.w, imgDims.hero.h),
+  aboutHero: ph("About · portrait square", imgDims.about.w, imgDims.about.h),
 } as const;
+
+const projects = [
+  { id: 1, num: "01", title: "Bangadari workshops", desc: "Dummy — library programmes, print play, and community calendars." },
+  { id: 2, num: "02", title: "Hygge Time objects", desc: "Dummy — yut, norigae, and shelf stories for tactile gifts." },
+  { id: 3, num: "03", title: "I Was Pregnant in Korea", desc: "Dummy — essay book layout, spreads, and print proofs." },
+  { id: 4, num: "04", title: "Daily drawing diary", desc: "Dummy — Instagram rhythm, thumbnails, and ink tests." },
+  { id: 5, num: "05", title: "Exhibition graphics", desc: "Dummy — wall labels, wayfinding, and quiet typography." },
+  { id: 6, num: "06", title: "Popup cards & prints", desc: "Dummy — small editions, folds, and paper stocks." },
+] as const;
+
+const testimonials = [
+  {
+    quote:
+      "“Placeholder — warm testimonial about workshops, patience with beginners, and the calm clarity of Sofie’s drawing demos.”",
+    name: "A. Reader",
+    role: "Library programme lead",
+  },
+  {
+    quote:
+      "“Placeholder — middle card inverted in the template. Swap for a Hygge Time or collaborator quote when ready.”",
+    name: "Hygge Time",
+    role: "Product & storytelling",
+  },
+  {
+    quote:
+      "“Placeholder — short praise for packaging art direction, colour restraint, and friendly line work on shelf.”",
+    name: "Retail partner",
+    role: "Shop display",
+  },
+] as const;
 ---
 
 <Layout title={t.meta.title} description={t.meta.description}>
   <LanguageSwitcher />
 
-  <main class="text-ink">
-    <!-- 1. Hero -->
-    <section
-      id="hero"
-      class="flex min-h-[100svh] flex-col justify-end px-6 pb-16 pt-32 md:px-12 md:pb-24 md:pt-36 lg:px-16"
+  <header
+    class="sticky top-0 z-50 border-b-2 border-black bg-white/95 backdrop-blur-sm"
+    aria-label="Primary"
+  >
+    <div
+      class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-4 md:px-6 lg:px-8"
     >
-      <div
-        class="mx-auto grid w-full max-w-5xl gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.88fr)] lg:items-end lg:gap-14"
-      >
-        <div class="min-w-0">
-          <h1
-            class="font-serif text-[clamp(1.75rem,4vw,3rem)] font-semibold leading-[1.15] tracking-tight text-ink"
-            data-i18n="hero.tagline"
-          >
-            {t.hero.tagline}
-          </h1>
-          <p
-            class="mt-8 font-serif text-2xl font-medium text-ink md:text-3xl"
-            data-i18n="hero.name"
-          >
-            {t.hero.name}
-          </p>
-          <p
-            class="mt-2 font-sans text-base text-muted md:text-lg"
-            data-i18n="hero.role"
-          >
-            {t.hero.role}
-          </p>
-          <p class="mt-6">
-            <a
-              href={`mailto:${email}`}
-              class="font-sans text-sm text-ink underline decoration-ink/30 underline-offset-[6px] transition hover:decoration-ink"
-            >
-              {email}
-            </a>
-          </p>
-          <a
-            href="#about"
-            data-i18n-attr="hero.cta"
-            aria-label={`${t.hero.cta}. ${t.hero.ctaHint}`}
-            class="mt-12 inline-flex items-center gap-2 border border-ink/25 bg-canvas px-6 py-3 font-sans text-sm font-medium text-ink transition hover:bg-smudge"
-          >
-            <span data-i18n="hero.cta">{t.hero.cta}</span>
-            <span aria-hidden="true" class="text-muted">↓</span>
-          </a>
-        </div>
-        <figure class="min-w-0 lg:pb-1">
-          <div class="overflow-hidden rounded-sm border border-ink/10 bg-white/50 shadow-sm">
-            <img
-              src={img.hero}
-              alt=""
-              width={640}
-              height={800}
-              loading="eager"
-              decoding="async"
-              class="aspect-[4/5] w-full object-cover"
-            />
-          </div>
-          <figcaption class="mt-3 font-sans text-xs text-muted/90">
-            Placeholder — hero illustration or portrait
-          </figcaption>
-        </figure>
-      </div>
-      <PencilDivider class="mx-auto mt-20 max-w-5xl opacity-40" />
-    </section>
-
-    <!-- 2. About (감성 서사) -->
-    <section id="about" class="px-6 py-20 md:px-12 md:py-28 lg:px-16">
-      <div class="mx-auto max-w-3xl">
-        <h2
-          class="font-serif text-3xl font-semibold text-ink md:text-4xl"
-          data-i18n="about.title"
+      <a href="#home" class="flex items-center gap-2 text-black">
+        <span
+          class="flex h-9 w-9 items-center justify-center border-2 border-black text-[10px] font-bold leading-none"
+          >SF</span
         >
-          {t.about.title}
-        </h2>
-        <div class="mt-6 max-w-[3.5rem] text-ink opacity-35" aria-hidden="true">
-          <PencilDivider />
+        <span class="text-sm font-bold tracking-tight md:text-base" data-i18n="hero.name">{t.hero.name}</span>
+      </a>
+      <nav
+        class="order-3 flex w-full flex-wrap justify-center gap-x-6 gap-y-2 text-sm font-semibold md:order-none md:flex-1 md:justify-center md:gap-8"
+        aria-label="Sections"
+      >
+        <a href="#about" class="hover:underline">About Me</a>
+        <a href="#skills" class="hover:underline">Skills</a>
+        <a href="#projects" class="hover:underline">Project</a>
+        <a href="#contact" class="hover:underline">Contact Me</a>
+      </nav>
+      <a
+        href="#contact"
+        class="inline-flex items-center gap-2 border-2 border-black bg-black px-4 py-2 text-xs font-bold uppercase tracking-wide text-white hover:bg-neutral-900"
+      >
+        <span class="font-mono text-[10px]">[ICON]</span>
+        Resume
+      </a>
+    </div>
+  </header>
+
+  <section id="home" class="border-b-2 border-black bg-white">
+    <div
+      class="mx-auto grid max-w-6xl gap-12 px-4 py-16 md:grid-cols-2 md:items-center md:gap-16 md:px-6 md:py-24 lg:px-8"
+    >
+      <div class="min-w-0">
+        <p class="text-pretty text-4xl font-bold leading-[1.1] tracking-tight md:text-5xl lg:text-6xl">
+          <span data-i18n="landing.hello">{t.landing.hello}</span>{" "}
+          <span class="whitespace-nowrap font-black" data-i18n="hero.name">{t.hero.name}</span>
+        </p>
+        <p class="mt-4 text-pretty text-2xl font-bold leading-snug md:text-3xl lg:text-4xl">
+          <span class="font-black" data-i18n="hero.role">{t.hero.role}</span>{" "}
+          <span class="font-normal" data-i18n="landing.basedIn">{t.landing.basedIn}</span>{" "}
+          <span class="font-black" data-i18n="landing.location">{t.landing.location}</span>
+        </p>
+        <p
+          class="mt-8 max-w-xl text-base leading-relaxed text-neutral-700 md:text-lg"
+          data-i18n="landing.heroBlurb"
+        >
+          {t.landing.heroBlurb}
+        </p>
+        <div class="mt-10 flex flex-wrap gap-3">
+          <a
+            href={`mailto:${email}`}
+            class="flex h-12 w-12 items-center justify-center border-2 border-black text-[10px] font-bold hover:bg-black hover:text-white"
+            aria-label={t.footer.mailAria}
+            >[M]</a
+          >
+          <a
+            href={instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex h-12 w-12 items-center justify-center border-2 border-black text-[10px] font-bold hover:bg-black hover:text-white"
+            aria-label={t.footer.instagramAria}
+            >[IG]</a
+          >
+          <a
+            href={shopifyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex h-12 w-12 items-center justify-center border-2 border-black text-[10px] font-bold hover:bg-black hover:text-white"
+            aria-label={`${t.collaboration.shopifyCta}. ${t.collaboration.shopifyHint}`}
+            >[S]</a
+          >
+          <span
+            class="flex h-12 w-12 cursor-not-allowed items-center justify-center border-2 border-dashed border-neutral-400 text-[10px] font-bold text-neutral-500"
+            title="Placeholder">[in]</span
+          >
         </div>
-        <div class="mt-10 space-y-6 font-sans text-base leading-[1.75] text-muted md:text-lg">
+      </div>
+      <figure class="min-w-0">
+        <div class="relative aspect-square w-full max-w-lg overflow-hidden border-2 border-black bg-neutral-100 md:ml-auto">
+          <ImageSizeBadge w={imgDims.hero.w} h={imgDims.hero.h} />
+          <img
+            src={img.heroIllustration}
+            alt=""
+            width={imgDims.hero.w}
+            height={imgDims.hero.h}
+            loading="eager"
+            decoding="async"
+            class="h-full w-full object-cover"
+          />
+        </div>
+        <figcaption class="mt-2 font-mono text-[10px] text-neutral-500">
+          Dummy — hero illustration slot (replace with your line-art / portrait asset)
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="skills" class="border-b-2 border-black bg-white py-20 md:py-28">
+    <div class="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
+      <h2 class="text-center text-3xl font-bold md:text-4xl">
+        My <span class="font-black">Skills</span>
+      </h2>
+      <div class="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5 md:gap-5">
+        {
+          SKILL_LABELS.map((label, i) => (
+            <button
+              type="button"
+              data-skill-btn
+              data-skill-index={i}
+              data-active={i === 0 ? "" : undefined}
+              class="skill-square group flex aspect-square flex-col border-2 border-black bg-white text-center text-black transition hover:bg-neutral-100 data-[active]:bg-black data-[active]:text-white data-[active]:hover:bg-black"
+            >
+              <span class="skill-thumb-wrap relative mx-auto mt-3 flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden border border-black bg-neutral-100 group-data-[active]:border-white">
+                <img
+                  src={ph(`Skill ${i + 1}`, imgDims.skillIcon.w, imgDims.skillIcon.h)}
+                  alt=""
+                  width={56}
+                  height={56}
+                  loading="lazy"
+                  decoding="async"
+                  class="skill-btn-img h-full w-full object-cover"
+                />
+                <ImageSizeBadge w={imgDims.skillIcon.w} h={imgDims.skillIcon.h} compact />
+              </span>
+              <span class="mt-auto px-1 pb-3 pt-2 text-[11px] font-bold leading-tight md:text-xs">{label}</span>
+            </button>
+          ))
+        }
+      </div>
+      <p class="mx-auto mt-6 max-w-2xl text-center text-xs text-neutral-500">
+        Skill tiles use dummy thumbnails — swap each <code class="font-mono">img</code> for your own icon artwork.
+        Active tile inverts like the reference; the experience list below follows the selected skill.
+      </p>
+    </div>
+  </section>
+
+  <section id="experience" class="border-b-2 border-black bg-black py-20 text-white md:py-28">
+    <div class="mx-auto max-w-4xl px-4 md:px-6 lg:px-8">
+      <h2 class="text-center text-3xl font-bold md:text-4xl">
+        My <span class="font-black">Experience</span>
+      </h2>
+      <div id="experience-panels" class="mt-14 space-y-6">
+        {
+          EXPERIENCE_PANELS.map((panel, pi) => (
+            <div
+              data-experience-panel
+              data-panel-index={pi}
+              class:list={[pi === 0 ? "space-y-6" : "space-y-6 hidden"]}
+            >
+              {panel.map((card) => (
+                <article class="border-2 border-neutral-600 bg-black px-5 py-6 md:flex md:gap-6 md:px-6 md:py-7">
+                  <div class="flex h-12 w-12 shrink-0 items-center justify-center border border-neutral-500 bg-neutral-900 text-[10px] font-mono text-neutral-400">
+                    LOGO
+                  </div>
+                  <div class="mt-4 min-w-0 flex-1 md:mt-0">
+                    <div class="flex flex-col gap-1 md:flex-row md:items-start md:justify-between">
+                      <h3 class="text-lg font-bold leading-snug md:text-xl">
+                        {card.title}
+                        <span class="block text-sm font-semibold text-neutral-300 md:inline md:before:content-['_·_']">
+                          {card.company}
+                        </span>
+                      </h3>
+                      <p class="shrink-0 text-sm font-semibold text-neutral-400 md:text-right">{card.period}</p>
+                    </div>
+                    <p class="mt-4 text-sm leading-relaxed text-neutral-300 md:text-base">{card.body}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="border-b-2 border-black bg-white py-20 md:py-28">
+    <div class="mx-auto grid max-w-6xl gap-12 px-4 md:grid-cols-2 md:items-start md:gap-16 md:px-6 lg:px-8">
+      <figure class="order-2 md:order-1">
+        <div class="relative aspect-square w-full overflow-hidden border-2 border-black bg-neutral-100">
+          <ImageSizeBadge w={imgDims.about.w} h={imgDims.about.h} />
+          <img
+            src={img.aboutHero}
+            alt=""
+            width={imgDims.about.w}
+            height={imgDims.about.h}
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full object-cover"
+          />
+        </div>
+        <figcaption class="mt-2 font-mono text-[10px] text-neutral-500">
+          Dummy — large square “about” visual (template left column)
+        </figcaption>
+      </figure>
+      <div class="order-1 min-w-0 md:order-2">
+        <h2 class="text-3xl font-bold md:text-4xl" data-i18n="about.title">{t.about.title}</h2>
+        <div class="mt-8 space-y-6 text-base leading-relaxed text-neutral-800 md:text-lg">
           <p data-i18n="about.p1">{t.about.p1}</p>
-        </div>
-
-        <figure class="mt-12">
-          <div class="overflow-hidden rounded-sm border border-ink/10 bg-white/50 shadow-sm">
-            <img
-              src={img.aboutBergenSeoul}
-              alt=""
-              width={960}
-              height={520}
-              loading="lazy"
-              decoding="async"
-              class="aspect-[16/9] w-full object-cover md:aspect-[12/5]"
-            />
-          </div>
-          <figcaption class="mt-3 font-sans text-xs text-muted/90">
-            Placeholder — studio, Korea scenes, or in-between chapter
-          </figcaption>
-        </figure>
-
-        <div class="mt-12 space-y-6 font-sans text-base leading-[1.75] text-muted md:text-lg">
           <p data-i18n="about.p2">{t.about.p2}</p>
-        </div>
-
-        <figure class="mt-12">
-          <div class="overflow-hidden rounded-sm border border-ink/10 bg-white/50 shadow-sm">
-            <img
-              src={img.aboutSketchbook}
-              alt=""
-              width={960}
-              height={400}
-              loading="lazy"
-              decoding="async"
-              class="aspect-[21/9] w-full object-cover md:aspect-[24/9]"
-            />
-          </div>
-          <figcaption class="mt-3 font-sans text-xs text-muted/90">
-            Placeholder — essay, spreads, or Instagram sketch rhythm
-          </figcaption>
-        </figure>
-
-        <div class="mt-12 font-sans text-base leading-[1.75] text-muted md:text-lg">
           <p data-i18n="about.p3">{t.about.p3}</p>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <PencilDivider class="mx-auto max-w-3xl px-6 opacity-30 md:px-12 lg:px-16" />
-
-    <!-- 3. Career — accordion -->
-    <section id="career" class="px-6 py-20 md:px-12 md:py-28 lg:px-16">
-      <div class="mx-auto max-w-3xl">
-        <h2
-          class="font-serif text-3xl font-semibold text-ink md:text-4xl"
-          data-i18n="career.title"
-        >
-          {t.career.title}
-        </h2>
-        <p class="mt-3 font-sans text-sm text-muted" data-i18n="career.hint">
-          {t.career.hint}
-        </p>
-
-        <figure class="mt-10">
-          <div class="overflow-hidden rounded-sm border border-ink/10 bg-white/50 shadow-sm">
-            <img
-              src={img.career}
-              alt=""
-              width={960}
-              height={320}
-              loading="lazy"
-              decoding="async"
-              class="aspect-[3/1] w-full object-cover"
-            />
-          </div>
-          <figcaption class="mt-3 font-sans text-xs text-muted/90">
-            Placeholder — workshops, exhibitions, or archive mood
-          </figcaption>
-        </figure>
-
-        <div id="career-accordion" class="mt-12 border-t border-ink/10">
-          {
-            t.career.blocks.map((block) => (
-              <details class="group border-b border-ink/10">
-                <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-5 outline-none [&::-webkit-details-marker]:hidden">
-                  <span class="font-serif text-lg font-medium tracking-tight text-ink md:text-xl">
-                    {block.year}
-                  </span>
-                  <span
-                    class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-ink/15 text-muted transition-transform duration-200 group-open:rotate-180"
-                    aria-hidden="true"
-                  >
-                    ↓
-                  </span>
-                </summary>
-                <div class="border-t border-line bg-smudge/50 px-1 py-5 md:px-3">
-                  <ul class="list-disc space-y-2.5 pl-5 font-sans text-sm leading-relaxed text-muted md:text-[15px]">
-                    {block.items.map((item) => (
-                      <li>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              </details>
-            ))
-          }
-        </div>
+  <section id="projects" class="border-b-2 border-black bg-black py-20 text-white md:py-28">
+    <div class="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
+      <h2 class="text-center text-3xl font-bold md:text-4xl">
+        My <span class="font-black">Projects</span>
+      </h2>
+      <div class="mt-16 grid gap-12 md:grid-cols-2 md:gap-x-10 md:gap-y-16">
+        {
+          projects.map((p) => (
+            <article class="flex flex-col border-2 border-white/25 bg-black">
+              <div class="relative aspect-[4/3] w-full overflow-hidden border-b-2 border-white/20 bg-neutral-900">
+                <ImageSizeBadge w={imgDims.project.w} h={imgDims.project.h} tone="dark" />
+                <img
+                  src={ph(`Project ${p.num}`, imgDims.project.w, imgDims.project.h)}
+                  alt=""
+                  width={imgDims.project.w}
+                  height={imgDims.project.h}
+                  loading="lazy"
+                  decoding="async"
+                  class="h-full w-full object-cover opacity-90"
+                />
+              </div>
+              <div class="flex flex-1 flex-col px-5 py-6 md:px-6 md:py-7">
+                <p class="font-mono text-xs font-bold text-neutral-400">{p.num}</p>
+                <h3 class="mt-2 text-xl font-bold md:text-2xl">{p.title}</h3>
+                <p class="mt-3 flex-1 text-sm leading-relaxed text-neutral-300 md:text-base">{p.desc}</p>
+                <a
+                  href={`/projects/${p.id}`}
+                  class="mt-6 inline-flex w-max items-center gap-2 border-2 border-white px-4 py-2 text-xs font-bold uppercase tracking-wide text-white hover:bg-white hover:text-black"
+                >
+                  more
+                  <span class="font-mono text-[10px]">[→]</span>
+                </a>
+              </div>
+            </article>
+          ))
+        }
       </div>
-    </section>
+    </div>
+  </section>
 
-    <PencilDivider class="mx-auto max-w-3xl px-6 opacity-30 md:px-12 lg:px-16" />
+  <section id="archive" class="border-b-2 border-black bg-white py-20 md:py-28">
+    <div class="mx-auto max-w-3xl px-4 md:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold md:text-4xl" data-i18n="archive.title">{t.archive.title}</h2>
+      <p class="mt-3 text-sm text-neutral-600 md:text-base" data-i18n="archive.subtitle">{t.archive.subtitle}</p>
 
-    <!-- 4. Hygge Time -->
-    <section id="collaboration" class="px-6 py-20 md:px-12 md:py-28 lg:px-16">
-      <div class="mx-auto max-w-3xl rounded-sm border border-ink/10 bg-white/40 p-8 shadow-sm md:p-12">
-        <p class="font-sans text-xs font-semibold uppercase tracking-[0.2em] text-muted">
-          Hygge Time
-        </p>
-        <h2
-          class="mt-3 font-serif text-3xl font-semibold text-ink md:text-4xl"
-          data-i18n="collaboration.title"
-        >
-          {t.collaboration.title}
-        </h2>
-        <p
-          class="mt-4 font-serif text-xl text-ink md:text-2xl"
-          data-i18n="collaboration.role"
-        >
-          {t.collaboration.role}
-        </p>
+      <h3 class="mt-14 text-xl font-bold" data-i18n="career.title">{t.career.title}</h3>
+      <p class="mt-2 text-sm text-neutral-600" data-i18n="career.hint">{t.career.hint}</p>
+      <div id="career-accordion" class="mt-8 border-t-2 border-black">
+        {
+          t.career.blocks.map((block) => (
+            <details class="group border-b-2 border-neutral-300">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-4 outline-none [&::-webkit-details-marker]:hidden">
+                <span class="text-base font-bold text-black md:text-lg">{block.year}</span>
+                <span class="font-mono text-[10px] text-neutral-500" aria-hidden="true">
+                  [+]
+                </span>
+              </summary>
+              <div class="border-t border-neutral-200 bg-neutral-50 px-1 py-4 md:px-3">
+                <ul class="list-disc space-y-2 pl-5 text-sm leading-relaxed text-neutral-700 md:text-[15px]">
+                  {block.items.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            </details>
+          ))
+        }
+      </div>
 
-        <div class="mt-10 grid gap-4 sm:grid-cols-2">
-          <figure class="min-w-0">
-            <div class="overflow-hidden rounded-sm border border-ink/10 bg-white/60 shadow-sm">
-              <img
-                src={img.collabYut}
-                alt=""
-                width={520}
-                height={520}
-                loading="lazy"
-                decoding="async"
-                class="aspect-square w-full object-cover"
-              />
-            </div>
-            <figcaption class="mt-2 font-sans text-xs text-muted/90">
-              Placeholder — yut / board games
-            </figcaption>
-          </figure>
-          <figure class="min-w-0">
-            <div class="overflow-hidden rounded-sm border border-ink/10 bg-white/60 shadow-sm">
-              <img
-                src={img.collabNorigae}
-                alt=""
-                width={520}
-                height={520}
-                loading="lazy"
-                decoding="async"
-                class="aspect-square w-full object-cover"
-              />
-            </div>
-            <figcaption class="mt-2 font-sans text-xs text-muted/90">
-              Placeholder — norigae keyrings &amp; objects
-            </figcaption>
-          </figure>
-        </div>
-
-        <div class="mt-10 space-y-5 font-sans text-base leading-[1.75] text-muted md:text-lg">
+      <div class="mt-16 border-2 border-black bg-neutral-50 p-6 md:p-8">
+        <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-500">Hygge Time</p>
+        <h3 class="mt-2 text-2xl font-bold" data-i18n="collaboration.title">{t.collaboration.title}</h3>
+        <p class="mt-2 text-lg font-bold" data-i18n="collaboration.role">{t.collaboration.role}</p>
+        <div class="mt-6 space-y-4 text-neutral-800">
           <p data-i18n="collaboration.p1">{t.collaboration.p1}</p>
           <p data-i18n="collaboration.p2">{t.collaboration.p2}</p>
         </div>
@@ -282,67 +356,245 @@ const img = {
           data-i18n-attr="collaboration.shopify"
           data-i18n="collaboration.shopifyCta"
           aria-label={`${t.collaboration.shopifyCta}. ${t.collaboration.shopifyHint}`}
-          class="mt-10 inline-flex w-full items-center justify-center border border-ink bg-ink px-8 py-4 text-center font-sans text-sm font-semibold text-canvas transition hover:bg-ink/90 md:w-auto"
+          class="mt-8 inline-flex items-center gap-2 border-2 border-black bg-black px-6 py-3 text-sm font-bold text-white hover:bg-neutral-900"
         >
           {t.collaboration.shopifyCta}
         </a>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- 5. Footer -->
-    <footer class="border-t border-ink/10 px-6 py-16 md:px-12 md:py-20 lg:px-16">
-      <div class="mx-auto flex max-w-3xl flex-col gap-10 md:flex-row md:items-start md:justify-between">
-        <div>
-          <p
-            class="font-sans text-xs font-semibold uppercase tracking-[0.2em] text-muted"
-            data-i18n="footer.contactLabel"
+  <section id="testimonials" class="border-b-2 border-black bg-white py-20 md:py-28">
+    <div class="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
+      <h2 class="text-center text-3xl font-bold md:text-4xl">
+        My <span class="font-black">Testimonial</span>
+      </h2>
+      <div class="mt-14 grid gap-6 md:grid-cols-3 md:gap-8">
+        {
+          testimonials.map((item, i) => (
+            <article
+              class:list={[
+                "flex flex-col border-2 border-black p-6 md:p-7",
+                i === 1 ? "bg-black text-white" : "bg-white text-black",
+              ]}
+            >
+              <div
+                class:list={[
+                  "relative mx-auto flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 text-[10px] font-mono",
+                  i === 1 ? "border-white bg-neutral-900 text-neutral-300" : "border-black bg-neutral-100 text-neutral-500",
+                ]}
+              >
+                <ImageSizeBadge
+                  w={imgDims.avatar.w}
+                  h={imgDims.avatar.h}
+                  compact
+                  tone={i === 1 ? "dark" : "light"}
+                />
+                <img
+                  src={ph(`Avatar ${i + 1}`, imgDims.avatar.w, imgDims.avatar.h)}
+                  alt=""
+                  width={64}
+                  height={64}
+                  loading="lazy"
+                  decoding="async"
+                  class="h-full w-full object-cover"
+                />
+              </div>
+              <p
+                class:list={[
+                  "mt-6 flex-1 text-sm leading-relaxed md:text-[15px]",
+                  i === 1 ? "text-neutral-200" : "text-neutral-700",
+                ]}
+              >
+                {item.quote}
+              </p>
+              <p class:list={["mt-6 text-sm font-bold", i === 1 ? "text-white" : "text-black"]}>{item.name}</p>
+              <p class:list={["text-xs font-semibold", i === 1 ? "text-neutral-400" : "text-neutral-500"]}>
+                {item.role}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+      <div
+        class="mx-auto mt-12 flex max-w-3xl flex-col gap-4 rounded-md border-2 border-black bg-neutral-50 px-6 py-5 text-sm md:flex-row md:items-center md:justify-between md:text-base"
+      >
+        <p class="font-semibold text-black" data-i18n="footer.contactLabel">{t.footer.contactLabel}</p>
+        <div class="flex flex-col gap-2 md:flex-row md:gap-8">
+          <a
+            href={`mailto:${email}`}
+            class="font-medium underline decoration-neutral-400 underline-offset-4 hover:decoration-black"
+            data-i18n-attr="footer.mail"
+            aria-label={t.footer.mailAria}
           >
-            {t.footer.contactLabel}
-          </p>
-          <div class="mt-5 flex flex-wrap items-center gap-5">
-            <a
-              href={`mailto:${email}`}
-              class="inline-flex items-center gap-2 text-ink transition hover:opacity-70"
-              aria-label={t.footer.mailAria}
-              data-i18n-attr="footer.mail"
-            >
-              <svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="M4 6h16v12H4V6zm0 0l8 6 8-6"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"></path>
-              </svg>
-              <span class="font-sans text-sm">{email}</span>
-            </a>
-            <a
-              href={instagramUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 text-ink transition hover:opacity-70"
-              aria-label={t.footer.instagramAria}
-              data-i18n-attr="footer.instagram"
-            >
-              <svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path
-                  d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"
-                ></path>
-              </svg>
-              <span class="font-sans text-sm">@sofiefribo_illustration</span>
-            </a>
-          </div>
-        </div>
-        <div class="flex flex-col gap-3 md:text-right">
-          <p class="font-serif text-sm italic text-muted" data-i18n="footer.designed">
-            {t.footer.designed}
-          </p>
-          <p class="font-sans text-xs text-muted/80" data-i18n="footer.rights">
-            © {new Date().getFullYear()}
-            {t.footer.rights}
-          </p>
+            {email}
+          </a>
+          <a
+            href={instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-medium underline decoration-neutral-400 underline-offset-4 hover:decoration-black"
+            data-i18n-attr="footer.instagram"
+            aria-label={t.footer.instagramAria}
+          >
+            @sofiefribo_illustration
+          </a>
         </div>
       </div>
-    </footer>
-  </main>
+    </div>
+  </section>
+
+  <section id="contact" class="border-b-2 border-black bg-white py-20 md:py-28">
+    <div class="mx-auto grid max-w-6xl gap-14 px-4 md:grid-cols-2 md:gap-16 md:px-6 lg:px-8">
+      <div>
+        <form id="contact-form" class="space-y-4" action="#" method="post">
+          <label class="block text-xs font-bold uppercase tracking-wide text-neutral-600">
+            Your Name
+            <input
+              type="text"
+              name="name"
+              autocomplete="name"
+              class="mt-2 w-full border-2 border-black bg-white px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-black/20"
+              placeholder="Name"
+            />
+          </label>
+          <label class="block text-xs font-bold uppercase tracking-wide text-neutral-600">
+            Email
+            <input
+              type="email"
+              name="email"
+              autocomplete="email"
+              class="mt-2 w-full border-2 border-black bg-white px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-black/20"
+              placeholder="you@example.com"
+            />
+          </label>
+          <label class="block text-xs font-bold uppercase tracking-wide text-neutral-600">
+            Your website (if any)
+            <input
+              type="url"
+              name="website"
+              class="mt-2 w-full border-2 border-black bg-white px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-black/20"
+              placeholder="https://"
+            />
+          </label>
+          <label class="block text-xs font-bold uppercase tracking-wide text-neutral-600">
+            How can I help?
+            <textarea
+              name="message"
+              rows={5}
+              class="mt-2 w-full resize-y border-2 border-black bg-white px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-black/20"
+              placeholder="Message"
+            />
+          </label>
+          <button
+            type="submit"
+            class="w-full border-2 border-black bg-black py-3 text-sm font-bold uppercase tracking-wide text-white hover:bg-neutral-900 md:w-auto md:px-10"
+          >
+            Get in Touch
+          </button>
+          <div class="flex gap-3 pt-2">
+            <span class="flex h-11 w-11 items-center justify-center border-2 border-black text-[10px] font-bold">[f]</span>
+            <span class="flex h-11 w-11 items-center justify-center border-2 border-black text-[10px] font-bold">[ig]</span>
+            <span class="flex h-11 w-11 items-center justify-center border-2 border-black text-[10px] font-bold">[x]</span>
+            <span class="flex h-11 w-11 items-center justify-center border-2 border-black text-[10px] font-bold">[in]</span>
+          </div>
+        </form>
+      </div>
+      <div>
+        <h2 class="text-3xl font-bold leading-tight md:text-4xl">
+          Let’s <span class="font-black">talk</span> for<br />Something special
+        </h2>
+        <p class="mt-6 text-neutral-700">
+          Placeholder — short invite to collaborate on illustration, workshops, or Hygge Time launches. Prefer
+          email or Instagram DMs for fastest replies.
+        </p>
+        <p class="mt-8 text-lg font-bold">
+          <a href={`mailto:${email}`} class="hover:underline">{email}</a>
+        </p>
+        <p class="mt-2 text-lg font-bold text-neutral-700">+82 10-0000-0000</p>
+        <p class="mt-6">
+          <a
+            href={instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-sm font-semibold underline decoration-neutral-400 underline-offset-4 hover:decoration-black"
+          >
+            Instagram — @sofiefribo_illustration
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-black py-10 text-white md:py-12">
+    <div class="mx-auto flex max-w-6xl flex-col gap-6 px-4 md:flex-row md:items-center md:justify-between md:px-6 lg:px-8">
+      <div class="flex items-center gap-2">
+        <span class="flex h-9 w-9 items-center justify-center border-2 border-white text-[10px] font-bold">SF</span>
+        <span class="text-sm font-bold" data-i18n="hero.name">{t.hero.name}</span>
+      </div>
+      <div class="text-right text-xs text-neutral-400">
+        <p data-i18n="footer.designed" class="text-neutral-300">{t.footer.designed}</p>
+        <p class="mt-1" data-i18n="footer.rights">
+          © {new Date().getFullYear()}
+          {t.footer.rights}
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <style is:global>
+    [data-skill-btn][data-active] .skill-btn-img {
+      filter: invert(1);
+    }
+    [data-skill-btn][data-active] .skill-thumb-wrap {
+      border-color: #fff;
+    }
+  </style>
+
+  <script is:inline>
+    (function () {
+      function initSkills() {
+        var btns = document.querySelectorAll("[data-skill-btn]");
+        var panels = document.querySelectorAll("[data-experience-panel]");
+        if (!btns.length || !panels.length) return;
+
+        function setActive(index) {
+          btns.forEach(function (b, j) {
+            if (j === index) b.setAttribute("data-active", "");
+            else b.removeAttribute("data-active");
+          });
+          panels.forEach(function (p, j) {
+            if (j === index) p.classList.remove("hidden");
+            else p.classList.add("hidden");
+          });
+        }
+
+        btns.forEach(function (b, idx) {
+          b.addEventListener("click", function () {
+            setActive(idx);
+          });
+        });
+
+        setActive(0);
+      }
+
+      function initForm() {
+        var f = document.getElementById("contact-form");
+        if (!f) return;
+        f.addEventListener("submit", function (e) {
+          e.preventDefault();
+        });
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", function () {
+          initSkills();
+          initForm();
+        });
+      } else {
+        initSkills();
+        initForm();
+      }
+    })();
+  </script>
 </Layout>

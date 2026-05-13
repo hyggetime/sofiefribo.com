@@ -1,0 +1,27 @@
+---
+/** 권장 소스 이미지 크기(가로×세로 px) — 더미 위 오버레이 */
+interface Props {
+  w: number;
+  h: number;
+  /** 어두운 배경 위(프로젝트 썸네일 등) */
+  tone?: "light" | "dark";
+  /** 스킬 아이콘 등 좁은 영역 */
+  compact?: boolean;
+}
+
+const { w, h, tone = "light", compact = false } = Astro.props;
+const label = `${w} × ${h} px`;
+---
+
+<span
+  class:list={[
+    "pointer-events-none absolute z-10 select-none rounded border font-mono font-bold leading-none tracking-tight shadow-sm",
+    compact ? "left-0.5 top-0.5 px-1 py-0.5 text-[7px] md:text-[8px]" : "left-2 top-2 px-1.5 py-1 text-[9px] md:text-[10px]",
+    tone === "dark"
+      ? "border-white/50 bg-black/85 text-white"
+      : "border-black/25 bg-white/95 text-black backdrop-blur-sm",
+  ]}
+  aria-hidden="true"
+>
+  {label}
+</span>

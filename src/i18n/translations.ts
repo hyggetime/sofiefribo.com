@@ -14,12 +14,21 @@ export const localeLabels: Record<Locale, string> = {
 
 export type TranslationTree = {
   meta: { title: string; description: string };
+  /** Hero headline lines (template-style greeting) */
+  landing: {
+    hello: string;
+    basedIn: string;
+    location: string;
+    heroBlurb: string;
+  };
+  /** Temporary block below projects */
+  archive: {
+    title: string;
+    subtitle: string;
+  };
   hero: {
-    tagline: string;
     name: string;
     role: string;
-    cta: string;
-    ctaHint: string;
   };
   about: {
     title: string;
@@ -200,12 +209,21 @@ export const translations: Record<Locale, TranslationTree> = {
       description:
         "Drawing hygge in the heart of Korea — illustration, Hygge Time art direction, and quiet stories on paper.",
     },
+    landing: {
+      hello: "Hello, I am",
+      basedIn: "based in",
+      location: "Korea.",
+      heroBlurb:
+        "Illustration, workshops, and Hygge Time art direction — quiet lines on paper from Seoul.",
+    },
+    archive: {
+      title: "Timeline & studio",
+      subtitle:
+        "Year-by-year CV and Hygge Time collaboration (temporary placement below projects, per layout request).",
+    },
     hero: {
-      tagline: "Drawing Hygge in the Heart of Korea",
       name: "Sofie Fribo",
       role: "Illustrator & Artist",
-      cta: "About me",
-      ctaHint: "Scroll to the introduction",
     },
     about: {
       title: "About me",
@@ -240,12 +258,21 @@ export const translations: Record<Locale, TranslationTree> = {
       description:
         "Hygge tegnet i hjertet af Korea — illustration, art direction for Hygge Time og stille historier på papir.",
     },
+    landing: {
+      hello: "Hej, jeg er",
+      basedIn: "bor i",
+      location: "Korea.",
+      heroBlurb:
+        "Illustration, workshops og art direction for Hygge Time — stille streger på papir fra Seoul.",
+    },
+    archive: {
+      title: "Tidslinje & studio",
+      subtitle:
+        "År-for-år CV og Hygge Time-samarbejde (midlertidigt under projekter, efter layoutønske).",
+    },
     hero: {
-      tagline: "Hygge tegnet i hjertet af Korea",
       name: "Sofie Fribo",
       role: "Illustratør og kunstner",
-      cta: "Om mig",
-      ctaHint: "Rul til introduktionen",
     },
     about: {
       title: "Om mig",
@@ -280,12 +307,20 @@ export const translations: Record<Locale, TranslationTree> = {
       description:
         "한국 속에서 그리는 휘게 — 일러스트, 휘게타임 아트디렉션, 종이 위의 이야기.",
     },
+    landing: {
+      hello: "안녕하세요,",
+      basedIn: "활동 지역은",
+      location: "한국입니다.",
+      heroBlurb:
+        "일러스트, 워크숍, 휘게타임 아트디렉션 — 서울에서 종이 위에 놓는 고요한 선들입니다.",
+    },
+    archive: {
+      title: "타임라인 & 스튜디오",
+      subtitle: "연도별 이력과 휘게타임 협업(레이아웃 요청에 따라 프로젝트 아래 임시 배치).",
+    },
     hero: {
-      tagline: "Drawing Hygge in the Heart of Korea",
       name: "Sofie Fribo · 소피 피보",
       role: "일러스트레이터 & 아티스트",
-      cta: "소개 읽기",
-      ctaHint: "소개 섹션으로 이동",
     },
     about: {
       title: "작가 소개",
