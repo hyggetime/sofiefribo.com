@@ -4,6 +4,8 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
+    "sync:visibility": "node scripts/sync-visibility-doc.mjs",
+    "prebuild": "node scripts/sync-visibility-doc.mjs",
     "build": "astro build",
     "preview": "astro preview"
   },

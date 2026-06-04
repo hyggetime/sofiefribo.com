@@ -2,16 +2,17 @@
 import Layout from "../layouts/Layout.astro";
 import LanguageSwitcher from "../components/LanguageSwitcher.astro";
 import ImageSizeBadge from "../components/ImageSizeBadge.astro";
+import { hiddenClass } from "../config/siteVisibility";
 import { translations, defaultLocale } from "../i18n/translations";
-import { SOFIEFRIBO_SUBPAGES, SOFIEFRIBO_SUBPAGE_BY_KEY } from "../data/sofiefriboSubpages";
+import { SOFIEFRIBO_SUBPAGES } from "../data/sofiefriboSubpages";
+import { resolveMailClubSubscribeUrl } from "../data/mailClubContent";
 import MailClubSection from "../components/MailClubSection.astro";
 import ArtShopSection from "../components/ArtShopSection.astro";
 
 const t = translations[defaultLocale];
 const shopifyUrl =
   import.meta.env.PUBLIC_SHOPIFY_URL?.toString().trim() || "https://www.shopify.com";
-const mailClubSubscribeUrl =
-  import.meta.env.PUBLIC_SHOPIFY_MAILCLUB_URL?.toString().trim() || shopifyUrl;
+const mailClubSubscribeUrl = resolveMailClubSubscribeUrl(import.meta.env.PUBLIC_SHOPIFY_MAILCLUB_URL);
 const instagramUrl = "https://www.instagram.com/sofiefribo_illustration/";
 const email = "sofiefribo.korea@gmail.com";
 const logoSrc = "/images/misc/소피_피보.png";
@@ -32,7 +33,7 @@ const ph = (label: string, w: number, h: number) =>
 const heroThumbs = SOFIEFRIBO_SUBPAGES;
 
 const heroThumbHref = (key: (typeof SOFIEFRIBO_SUBPAGES)[number]["key"]) =>
-  key === "mailclub" ? "#mailclub" : key === "shop" ? "#shop" : SOFIEFRIBO_SUBPAGE_BY_KEY[key].path;
+  key === "mailclub" ? "#mailclub" : key === "shop" ? "#shop" : "#projects";
 
 const img = {
   heroIllustration: "/images/hero/SOFIE_FRIBO_HERO.png",
@@ -97,11 +98,14 @@ const testimonials = [
         <a href="#mailclub" class="hover:underline">Mail Club</a>
         <a href="#shop" class="hover:underline">Art shop</a>
         <a href="#projects" class="hover:underline">Projects</a>
-        <a href="#contact" class="hidden hover:underline">Contact Me</a>
+        <a href="#contact" class:list={["hover:underline", hiddenClass("nav.contact")]}>Contact Me</a>
       </nav>
       <a
         href="#contact"
-        class="hidden inline-flex items-center gap-2 border-2 border-black bg-black px-4 py-2 text-xs font-bold uppercase tracking-wide text-white hover:bg-neutral-900"
+        class:list={[
+          "inline-flex items-center gap-2 border-2 border-black bg-black px-4 py-2 text-xs font-bold uppercase tracking-wide text-white hover:bg-neutral-900",
+          hiddenClass("nav.resume"),
+        ]}
       >
         <span class="font-mono text-[10px]">[ICON]</span>
         Resume
@@ -146,9 +150,9 @@ const testimonials = [
     </div>
 
     <div class="bg-[#ffffff] py-6 md:py-8" aria-label="Quick links">
-      <div class="w-full px-1.5 sm:px-3 md:px-12 lg:px-16 xl:px-20">
+      <div class="w-full max-w-full px-4 sm:px-6 md:px-12 lg:px-16 xl:px-20">
         <div
-          class="grid w-full grid-cols-3 gap-1 sm:gap-2 max-md:origin-bottom max-md:scale-150 md:mx-auto md:w-[48.75%] md:max-w-[48.75%] md:scale-100 md:gap-2 lg:gap-2.5"
+          class="mx-auto grid w-full max-w-full grid-cols-3 gap-2 sm:gap-3 md:w-[48.75%] md:max-w-[48.75%] md:gap-2 lg:gap-2.5"
         >
           {
             heroThumbs.map((thumb) => (
@@ -158,7 +162,7 @@ const testimonials = [
                 class="group flex min-w-0 flex-col justify-end bg-[#ffffff] transition hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
               >
                 {/* Mailclub 600×400 비율 = 셀 높이 기준; Shop·PortFoilo는 같은 높이에 맞춤 */}
-                <div class="relative aspect-[3/2] w-full">
+                <div class="relative aspect-[3/2] w-full min-w-0 overflow-hidden">
                   {
                     thumb.key === "mailclub" ? (
                       <img
@@ -168,7 +172,7 @@ const testimonials = [
                         height={thumb.imageH}
                         loading="lazy"
                         decoding="async"
-                        class="absolute inset-x-0 bottom-0 h-full w-full max-w-none object-contain object-bottom"
+                        class="absolute inset-x-0 bottom-0 h-full w-full max-w-full object-contain object-bottom"
                       />
                     ) : (
                       <img
@@ -180,8 +184,8 @@ const testimonials = [
                         decoding="async"
                         class:list={[
                           "absolute bottom-0 left-1/2 h-full w-auto max-w-full -translate-x-1/2 object-contain object-bottom",
-                          thumb.key === "shop" && "origin-bottom scale-[1.03] translate-y-[6px]",
-                          thumb.key === "portfoilo" && "origin-bottom scale-[1.2] translate-y-[10px]",
+                          thumb.key === "shop" && "origin-bottom md:scale-[1.03] md:translate-y-[6px]",
+                          thumb.key === "portfoilo" && "origin-bottom md:scale-[1.2] md:translate-y-[10px]",
                         ]}
                       />
                     )
@@ -240,7 +244,7 @@ const testimonials = [
     </div>
   </section>
 
-  <section id="archive" class="hidden border-b-2 border-black bg-[#ffffff] py-20 md:py-28">
+  <section id="archive" class:list={["border-b-2 border-black bg-[#ffffff] py-20 md:py-28", hiddenClass("section.archive")]}>
     <div class="mx-auto max-w-3xl px-4 md:px-6 lg:px-8">
       <h2 class="text-3xl font-bold md:text-4xl" data-i18n="archive.title">{t.archive.title}</h2>
       <p class="mt-3 text-sm text-neutral-600 md:text-base" data-i18n="archive.subtitle">{t.archive.subtitle}</p>
@@ -292,7 +296,7 @@ const testimonials = [
     </div>
   </section>
 
-  <section id="testimonials" class="hidden border-b-2 border-black bg-[#ffffff] py-20 md:py-28">
+  <section id="testimonials" class:list={["border-b-2 border-black bg-[#ffffff] py-20 md:py-28", hiddenClass("section.testimonials")]}>
     <div class="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
       <h2 class="text-center text-3xl font-bold md:text-4xl">
         My <span class="font-black">Testimonial</span>
@@ -372,7 +376,7 @@ const testimonials = [
     </div>
   </section>
 
-  <section id="contact" class="hidden border-b-2 border-black bg-[#ffffff] py-20 md:py-28">
+  <section id="contact" class:list={["border-b-2 border-black bg-[#ffffff] py-20 md:py-28", hiddenClass("section.contact")]}>
     <div class="mx-auto grid max-w-6xl gap-14 px-4 md:grid-cols-2 md:gap-16 md:px-6 lg:px-8">
       <div>
         <form id="contact-form" class="space-y-4" action="#" method="post">

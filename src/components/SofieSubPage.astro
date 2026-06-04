@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import SubPageSection from "../components/SubPageSection.astro";
+import { resolveMailClubSubscribeUrl } from "../data/mailClubContent";
 import MailClubSection from "../components/MailClubSection.astro";
 import ArtShopSection from "../components/ArtShopSection.astro";
 import type { SofieSubpage } from "../data/sofiefriboSubpages";
@@ -15,8 +16,7 @@ const logoSrc = "/images/misc/소피_피보.png";
 const logoSize = 22;
 const shopifyUrl =
   import.meta.env.PUBLIC_SHOPIFY_URL?.toString().trim() || "https://www.shopify.com";
-const mailClubSubscribeUrl =
-  import.meta.env.PUBLIC_SHOPIFY_MAILCLUB_URL?.toString().trim() || shopifyUrl;
+const mailClubSubscribeUrl = resolveMailClubSubscribeUrl(import.meta.env.PUBLIC_SHOPIFY_MAILCLUB_URL);
 ---
 
 <Layout title={`${page.title} — Sofie Fribo`} description={page.description}>

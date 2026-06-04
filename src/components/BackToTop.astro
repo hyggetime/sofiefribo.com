@@ -5,9 +5,10 @@
 <button
   type="button"
   id="back-to-top"
-  class="back-to-top fixed bottom-6 right-6 z-[55] flex h-12 w-12 items-center justify-center border-2 border-black bg-black text-white opacity-0 shadow-lg transition-[opacity,background-color,color,border-color] duration-200 pointer-events-none data-[visible]:opacity-100 data-[visible]:pointer-events-auto data-[on-dark]:border-white data-[on-dark]:bg-white data-[on-dark]:text-black md:bottom-8 md:right-8"
+  class="back-to-top fixed bottom-[max(1.25rem,env(safe-area-inset-bottom,0px))] right-4 z-[70] flex h-11 w-11 items-center justify-center border-2 border-black bg-black text-white opacity-0 shadow-lg transition-[opacity,background-color,color,border-color] duration-200 pointer-events-none data-[visible]:opacity-100 data-[visible]:pointer-events-auto data-[on-dark]:border-white data-[on-dark]:bg-white data-[on-dark]:text-black md:bottom-8 md:right-[25%] md:h-12 md:w-12"
   aria-label="Back to top"
-  hidden
+  aria-hidden="true"
+  tabindex="-1"
 >
   <svg
     class="h-5 w-5 shrink-0"
@@ -24,14 +25,22 @@
 </button>
 
 <script>
-  const DARK_SECTIONS = "#experience, #projects, footer";
-  const SCROLL_SHOW = 280;
+  const DARK_SECTIONS = "#projects, footer";
+  const SCROLL_SHOW_DESKTOP = 280;
+  const SCROLL_SHOW_MOBILE = 80;
 
   function initBackToTop() {
     const btn = document.getElementById("back-to-top");
     if (!btn) return;
 
+    const mqMobile = window.matchMedia("(max-width: 767px)");
+
+    function isMobile() {
+      return mqMobile.matches;
+    }
+
     function isOverDarkSection(): boolean {
+      if (!btn.hasAttribute("data-visible")) return false;
       const rect = btn.getBoundingClientRect();
       const x = Math.min(Math.max(rect.left + rect.width / 2, 1), window.innerWidth - 1);
       const y = Math.min(Math.max(rect.top + rect.height / 2, 1), window.innerHeight - 1);
@@ -44,9 +53,11 @@
     }
 
     function update() {
-      const scrolled = window.scrollY > SCROLL_SHOW;
+      const threshold = isMobile() ? SCROLL_SHOW_MOBILE : SCROLL_SHOW_DESKTOP;
+      const scrolled = window.scrollY > threshold;
       btn.toggleAttribute("data-visible", scrolled);
-      btn.hidden = !scrolled;
+      btn.setAttribute("aria-hidden", scrolled ? "false" : "true");
+      btn.tabIndex = scrolled ? 0 : -1;
       btn.toggleAttribute("data-on-dark", isOverDarkSection());
     }
 
@@ -61,6 +72,7 @@
 
     window.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
+    mqMobile.addEventListener("change", update);
     update();
   }
 

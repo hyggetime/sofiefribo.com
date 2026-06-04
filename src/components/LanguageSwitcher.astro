@@ -1,9 +1,12 @@
 ---
 import { defaultLocale, type Locale } from "../i18n/translations";
+import { isHidden } from "../config/siteVisibility";
 
 const locales: Locale[] = ["en", "da", "ko"];
+const hide = isHidden("languageSwitcher");
 ---
 
+{!hide && (
 <div
   class="fixed right-4 top-4 z-[60] flex items-center gap-0.5 border-2 border-black bg-[#ffffff] px-0.5 py-0.5 shadow-sm md:right-6 md:top-6"
   role="navigation"
@@ -22,6 +25,7 @@ const locales: Locale[] = ["en", "da", "ko"];
     ))
   }
 </div>
+)}
 
 <script>
   import { defaultLocale, translations } from "../i18n/translations";

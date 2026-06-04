@@ -1,13 +1,14 @@
 ---
-import { MAIL_CLUB_ASSETS, MAIL_CLUB_CONTENT } from "../data/mailClubContent";
+import { MAIL_CLUB_ASSETS, MAIL_CLUB_CONTENT, resolveMailClubSubscribeUrl } from "../data/mailClubContent";
 
 interface Props {
   sectionId?: string;
-  /** Shopify checkout URL — dummy until store is wired */
+  /** Shopify 구독 URL — `.env` `PUBLIC_SHOPIFY_MAILCLUB_URL` 또는 기본 Hygge 링크 */
   subscribeUrl?: string;
 }
 
-const { sectionId = "mailclub", subscribeUrl = "https://www.shopify.com" } = Astro.props;
+const { sectionId = "mailclub", subscribeUrl } = Astro.props;
+const href = subscribeUrl ?? resolveMailClubSubscribeUrl(import.meta.env.PUBLIC_SHOPIFY_MAILCLUB_URL);
 
 const { hero, subscribe } = MAIL_CLUB_ASSETS;
 const content = MAIL_CLUB_CONTENT;
@@ -55,10 +56,10 @@ const content = MAIL_CLUB_CONTENT;
       </p>
 
       <a
-        href={subscribeUrl}
+        href={href}
         target="_blank"
         rel="noopener noreferrer"
-        class="mx-auto mt-10 inline-block w-full max-w-[16.875rem] transition hover:opacity-85 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black md:mt-12"
+        class="subscribe-btn mx-auto mt-10 inline-block w-full max-w-[16.875rem] rounded-sm transition-[transform,background-color] duration-75 hover:opacity-90 active:translate-x-[2px] active:translate-y-[2px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black md:mt-12"
         aria-label="Subscribe to Snail Mail Club on Shopify"
       >
         <img
@@ -68,7 +69,7 @@ const content = MAIL_CLUB_CONTENT;
           height={subscribe.h}
           loading="lazy"
           decoding="async"
-          class="h-auto w-full object-contain"
+          class="subscribe-btn-img h-auto w-full object-contain transition-[filter] duration-75"
         />
       </a>
 
@@ -98,3 +99,13 @@ const content = MAIL_CLUB_CONTENT;
     </div>
   </div>
 </section>
+
+<style>
+  /* PNG: 투명 + 검은 선만 → 누를 때 invert + 검정 채움 = 흰 선·검정 버튼 */
+  .subscribe-btn:active {
+    background-color: #000;
+  }
+  .subscribe-btn:active .subscribe-btn-img {
+    filter: invert(1);
+  }
+</style>

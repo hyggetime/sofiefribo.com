@@ -1,0 +1,80 @@
+{
+  "_comment": "숨김/보이기 변경 시 이 파일만 수정한 뒤 npm run sync:visibility 실행",
+  "entries": [
+    {
+      "id": "languageSwitcher",
+      "hidden": true,
+      "kind": "global",
+      "label": "Language switcher (EN / DK / KO)",
+      "location": "Global · fixed top-right",
+      "file": "src/components/LanguageSwitcher.astro"
+    },
+    {
+      "id": "nav.contact",
+      "hidden": true,
+      "kind": "nav",
+      "label": "Contact Me (header nav)",
+      "location": "Home · header",
+      "file": "src/pages/index.astro"
+    },
+    {
+      "id": "nav.resume",
+      "hidden": true,
+      "kind": "nav",
+      "label": "Resume button",
+      "location": "Home · header",
+      "file": "src/pages/index.astro"
+    },
+    {
+      "id": "section.archive",
+      "hidden": true,
+      "kind": "section",
+      "label": "Timeline & studio (archive + Hygge Time CV)",
+      "location": "Home · #archive",
+      "file": "src/pages/index.astro"
+    },
+    {
+      "id": "section.testimonials",
+      "hidden": true,
+      "kind": "section",
+      "label": "My Testimonial",
+      "location": "Home · #testimonials",
+      "file": "src/pages/index.astro"
+    },
+    {
+      "id": "section.contact",
+      "hidden": true,
+      "kind": "section",
+      "label": "Contact form & Let's talk",
+      "location": "Home · #contact",
+      "file": "src/pages/index.astro"
+    },
+    {
+      "id": "artShop.productThumbnails",
+      "hidden": true,
+      "kind": "section",
+      "label": "Art shop product thumbnail grid",
+      "location": "Home · #shop (below hero)",
+      "file": "src/components/ArtShopSection.astro",
+      "note": "Replaced with “Coming Soon..” placeholder"
+    }
+  ],
+  "siteMap": {
+    "routes": [
+      { "path": "/", "label": "Home", "visible": true },
+      { "path": "/mailclub", "label": "Mail Club subpage", "visible": true },
+      { "path": "/shop", "label": "Art shop subpage", "visible": true },
+      { "path": "/portfoilo", "label": "PortFoilo subpage", "visible": true, "note": "Not linked from hero; portfolio thumb → #projects" },
+      { "path": "/projects/[id]", "label": "Project detail (placeholder)", "visible": true }
+    ],
+    "homeSections": [
+      { "id": "home", "label": "Hero + quick-link thumbs", "visible": true },
+      { "id": "mailclub", "label": "Mail Club section", "visible": true },
+      { "id": "shop", "label": "Art shop section", "visible": true },
+      { "id": "projects", "label": "My Projects", "visible": true },
+      { "id": "archive", "label": "Timeline & studio", "visible": false, "visibilityId": "section.archive" },
+      { "id": "testimonials", "label": "My Testimonial", "visible": false, "visibilityId": "section.testimonials" },
+      { "id": "contact", "label": "Contact", "visible": false, "visibilityId": "section.contact" }
+    ]
+  }
+}
