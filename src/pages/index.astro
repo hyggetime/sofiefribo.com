@@ -109,14 +109,11 @@ const testimonials = [
       class="mx-auto grid max-w-6xl gap-12 px-4 py-16 md:grid-cols-2 md:items-center md:gap-16 md:px-6 md:py-24 lg:px-8"
     >
       <div class="order-2 min-w-0 md:order-1">
-        <p class="text-pretty text-4xl font-bold leading-[1.1] tracking-tight md:text-5xl lg:text-6xl">
-          <span data-i18n="landing.hello">{t.landing.hello}</span>{" "}
-          <span class="whitespace-nowrap font-black" data-i18n="hero.name">{t.hero.name}</span>
-        </p>
-        <p class="mt-4 text-pretty text-2xl font-bold leading-snug md:text-3xl lg:text-4xl">
-          <span class="font-black" data-i18n="hero.role">{t.hero.role}</span>{" "}
-          <span class="font-normal" data-i18n="landing.basedIn">{t.landing.basedIn}</span>{" "}
-          <span class="font-black" data-i18n="landing.location">{t.landing.location}</span>
+        <p
+          class="text-pretty text-4xl font-bold leading-[1.1] tracking-tight md:text-5xl lg:text-6xl"
+          data-i18n="landing.hello"
+        >
+          {t.landing.hello}
         </p>
         <p
           class="mt-8 max-w-xl text-base leading-relaxed text-neutral-700 md:text-lg"

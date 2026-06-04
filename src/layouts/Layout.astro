@@ -51,10 +51,16 @@ const {
     content: "";
     position: absolute;
     inset: 0;
+    z-index: 1;
     border-radius: inherit;
     background-color: transparent;
     transition: background-color 75ms ease;
     pointer-events: none;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .press-surface:hover::after {
+      background-color: rgba(120, 110, 95, 0.14);
+    }
   }
   .press-surface:active::after {
     background-color: rgba(120, 110, 95, 0.14);

@@ -210,11 +210,11 @@ export const translations: Record<Locale, TranslationTree> = {
         "Drawing hygge in the heart of Korea — illustration, Hygge Time art direction, and quiet stories on paper.",
     },
     landing: {
-      hello: "Hello, I am",
+      hello: "Hi, I'm Sofie!",
       basedIn: "based in",
       location: "Korea.",
       heroBlurb:
-        "Illustration, workshops, and Hygge Time art direction — quiet lines on paper from Seoul.",
+        "I am a Danish illustrator, mother, and art educator living in the beautiful, chaotic heart of Seoul. My life is a mix of Scandinavian 'hygge' and wild Korean cultural adventures. I create art, contemporary cultural gifts, and stories that connect people across borders. Welcome to my creative World!",
     },
     archive: {
       title: "Timeline & studio",
@@ -259,11 +259,11 @@ export const translations: Record<Locale, TranslationTree> = {
         "Hygge tegnet i hjertet af Korea — illustration, art direction for Hygge Time og stille historier på papir.",
     },
     landing: {
-      hello: "Hej, jeg er",
+      hello: "Hej, jeg er Sofie!",
       basedIn: "bor i",
       location: "Korea.",
       heroBlurb:
-        "Illustration, workshops og art direction for Hygge Time — stille streger på papir fra Seoul.",
+        "Jeg er dansk illustratør, mor og kunstformidler og bor i det smukke, kaotiske hjerte af Seoul. Mit liv er en blanding af skandinavisk 'hygge' og vilde koreanske kulturelle eventyr. Jeg skaber kunst, nutidige kulturelle gaver og historier, der forbinder mennesker på tværs af grænser. Velkommen til min kreative verden!",
     },
     archive: {
       title: "Tidslinje & studio",
@@ -308,11 +308,11 @@ export const translations: Record<Locale, TranslationTree> = {
         "한국 속에서 그리는 휘게 — 일러스트, 휘게타임 아트디렉션, 종이 위의 이야기.",
     },
     landing: {
-      hello: "안녕하세요,",
+      hello: "안녕하세요, 저는 Sofie예요!",
       basedIn: "활동 지역은",
       location: "한국입니다.",
       heroBlurb:
-        "일러스트, 워크숍, 휘게타임 아트디렉션 — 서울에서 종이 위에 놓는 고요한 선들입니다.",
+        "저는 서울의 아름답고 혼란스러운 중심에 사는 덴마크 출신 일러스트레이터이자 엄마, 그리고 미술 교육자입니다. 제 삶은 스칸디나비아의 'hygge'와 역동적인 한국 문화 탐험의 조합입니다. 저는 국경을 넘어 사람들을 연결하는 예술, 현대적인 문화 선물, 이야기를 만듭니다. 제 창작 세계에 오신 것을 환영합니다!",
     },
     archive: {
       title: "타임라인 & 스튜디오",
