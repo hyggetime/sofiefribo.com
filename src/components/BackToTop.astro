@@ -1,0 +1,68 @@
+---
+/** 우하단 — 페이지 상단(#home)으로 스크롤. 검정 섹션 위에서는 색상 반전 */
+---
+
+<button
+  type="button"
+  id="back-to-top"
+  class="back-to-top fixed bottom-6 right-6 z-[55] flex h-12 w-12 items-center justify-center border-2 border-black bg-black text-white opacity-0 shadow-lg transition-[opacity,background-color,color,border-color] duration-200 pointer-events-none data-[visible]:opacity-100 data-[visible]:pointer-events-auto data-[on-dark]:border-white data-[on-dark]:bg-white data-[on-dark]:text-black md:bottom-8 md:right-8"
+  aria-label="Back to top"
+  hidden
+>
+  <svg
+    class="h-5 w-5 shrink-0"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M12 19V5M12 5l-6 6M12 5l6 6"></path>
+  </svg>
+</button>
+
+<script>
+  const DARK_SECTIONS = "#experience, #projects, footer";
+  const SCROLL_SHOW = 280;
+
+  function initBackToTop() {
+    const btn = document.getElementById("back-to-top");
+    if (!btn) return;
+
+    function isOverDarkSection(): boolean {
+      const rect = btn.getBoundingClientRect();
+      const x = Math.min(Math.max(rect.left + rect.width / 2, 1), window.innerWidth - 1);
+      const y = Math.min(Math.max(rect.top + rect.height / 2, 1), window.innerHeight - 1);
+      const prev = btn.style.pointerEvents;
+      btn.style.pointerEvents = "none";
+      const hit = document.elementFromPoint(x, y);
+      btn.style.pointerEvents = prev;
+      if (!hit) return false;
+      return !!hit.closest(DARK_SECTIONS);
+    }
+
+    function update() {
+      const scrolled = window.scrollY > SCROLL_SHOW;
+      btn.toggleAttribute("data-visible", scrolled);
+      btn.hidden = !scrolled;
+      btn.toggleAttribute("data-on-dark", isOverDarkSection());
+    }
+
+    btn.addEventListener("click", () => {
+      const home = document.getElementById("home");
+      if (home) {
+        home.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    });
+
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+  }
+
+  initBackToTop();
+</script>

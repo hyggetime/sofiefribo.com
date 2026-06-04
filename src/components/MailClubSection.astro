@@ -1,0 +1,100 @@
+---
+import { MAIL_CLUB_ASSETS, MAIL_CLUB_CONTENT } from "../data/mailClubContent";
+
+interface Props {
+  sectionId?: string;
+  /** Shopify checkout URL — dummy until store is wired */
+  subscribeUrl?: string;
+}
+
+const { sectionId = "mailclub", subscribeUrl = "https://www.shopify.com" } = Astro.props;
+
+const { hero, subscribe } = MAIL_CLUB_ASSETS;
+const content = MAIL_CLUB_CONTENT;
+---
+
+<section id={sectionId} class="border-b-2 border-black bg-[#ffffff] py-16 md:py-24">
+  <div class="mx-auto max-w-3xl px-4 md:px-6 lg:px-8">
+    <figure class="mx-auto w-full">
+      <div class="relative w-full overflow-hidden bg-[#ffffff]">
+        <img
+          src={hero.src}
+          alt={hero.alt}
+          width={hero.w}
+          height={hero.h}
+          loading="lazy"
+          decoding="async"
+          class="mx-auto h-auto w-full max-w-2xl object-contain"
+        />
+      </div>
+    </figure>
+
+    <div class="mx-auto mt-12 max-w-xl text-center md:mt-16">
+      <p class="text-base leading-relaxed text-neutral-800 md:text-lg">
+        {content.intro}
+      </p>
+
+      <h2 class="mt-10 text-2xl font-bold uppercase tracking-wide md:text-3xl">
+        {content.heading}
+      </h2>
+
+      <ul class="mt-10 space-y-8 text-left">
+        {
+          content.perks.map((perk) => (
+            <li>
+              <p class="text-sm font-bold uppercase tracking-wide md:text-base">{perk.title}</p>
+              <p class="mt-3 text-sm leading-relaxed text-neutral-700 md:text-base">{perk.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="mt-12 text-xl font-bold uppercase tracking-wide md:text-2xl">{content.price}</p>
+      <p class="mt-3 text-xs font-semibold uppercase tracking-[0.15em] text-neutral-600 md:text-sm">
+        {content.shipping}
+      </p>
+
+      <a
+        href={subscribeUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mx-auto mt-10 inline-block w-full max-w-[16.875rem] transition hover:opacity-85 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black md:mt-12"
+        aria-label="Subscribe to Snail Mail Club on Shopify"
+      >
+        <img
+          src={subscribe.src}
+          alt={subscribe.alt}
+          width={subscribe.w}
+          height={subscribe.h}
+          loading="lazy"
+          decoding="async"
+          class="h-auto w-full object-contain"
+        />
+      </a>
+
+      <div class="mt-12 border-t-2 border-black pt-8 text-left">
+        <h3 class="text-center text-sm font-bold uppercase tracking-[0.2em] text-neutral-600">FAQ</h3>
+        <div class="mt-6 divide-y-2 divide-black border-y-2 border-black">
+          {
+            content.faq.map((item) => (
+              <details class="group">
+                <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-4 outline-none [&::-webkit-details-marker]:hidden">
+                  <span class="text-left text-sm font-bold leading-snug md:text-base">{item.question}</span>
+                  <span
+                    class="mail-faq-chevron shrink-0 text-xs text-neutral-500 transition-transform duration-200 group-open:rotate-180"
+                    aria-hidden="true"
+                  >
+                    ▼
+                  </span>
+                </summary>
+                <div class="border-t border-neutral-200 pb-5 pt-4">
+                  <p class="text-sm leading-relaxed text-neutral-700 md:text-base">{item.answer}</p>
+                </div>
+              </details>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

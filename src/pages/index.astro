@@ -3,19 +3,24 @@ import Layout from "../layouts/Layout.astro";
 import LanguageSwitcher from "../components/LanguageSwitcher.astro";
 import ImageSizeBadge from "../components/ImageSizeBadge.astro";
 import { translations, defaultLocale } from "../i18n/translations";
-import { EXPERIENCE_PANELS, SKILL_LABELS } from "../data/experiencePanels";
+import { SOFIEFRIBO_SUBPAGES, SOFIEFRIBO_SUBPAGE_BY_KEY } from "../data/sofiefriboSubpages";
+import MailClubSection from "../components/MailClubSection.astro";
+import ArtShopSection from "../components/ArtShopSection.astro";
 
 const t = translations[defaultLocale];
 const shopifyUrl =
   import.meta.env.PUBLIC_SHOPIFY_URL?.toString().trim() || "https://www.shopify.com";
+const mailClubSubscribeUrl =
+  import.meta.env.PUBLIC_SHOPIFY_MAILCLUB_URL?.toString().trim() || shopifyUrl;
 const instagramUrl = "https://www.instagram.com/sofiefribo_illustration/";
 const email = "sofiefribo.korea@gmail.com";
+const logoSrc = "/images/misc/소피_피보.png";
+/** 표시 크기 — 기존 36px(h-9)의 60% */
+const logoSize = 22;
 
 /** 권장 에셋 크기(px) — placehold·배지·width/height와 동기 */
 const imgDims = {
-  hero: { w: 720, h: 720 },
-  about: { w: 720, h: 720 },
-  skillIcon: { w: 112, h: 112 },
+  hero: { w: 1400, h: 1400 },
   project: { w: 800, h: 600 },
   avatar: { w: 128, h: 128 },
 } as const;
@@ -23,9 +28,14 @@ const imgDims = {
 const ph = (label: string, w: number, h: number) =>
   `https://placehold.co/${w}x${h}/ffffff/171717/png?text=${encodeURIComponent(label)}`;
 
+/** 히어로 하단 — Mailclub · Shop · PortFoilo (열 3등분, Mailclub 높이 기준) */
+const heroThumbs = SOFIEFRIBO_SUBPAGES;
+
+const heroThumbHref = (key: (typeof SOFIEFRIBO_SUBPAGES)[number]["key"]) =>
+  key === "mailclub" ? "#mailclub" : key === "shop" ? "#shop" : SOFIEFRIBO_SUBPAGE_BY_KEY[key].path;
+
 const img = {
-  heroIllustration: ph("Hero · line illustration", imgDims.hero.w, imgDims.hero.h),
-  aboutHero: ph("About · portrait square", imgDims.about.w, imgDims.about.h),
+  heroIllustration: "/images/hero/SOFIE_FRIBO_HERO.png",
 } as const;
 
 const projects = [
@@ -63,31 +73,35 @@ const testimonials = [
   <LanguageSwitcher />
 
   <header
-    class="sticky top-0 z-50 border-b-2 border-black bg-white/95 backdrop-blur-sm"
+    class="sticky top-0 z-50 border-b-2 border-black bg-[#ffffff]"
     aria-label="Primary"
   >
     <div
       class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-4 md:px-6 lg:px-8"
     >
       <a href="#home" class="flex items-center gap-2 text-black">
-        <span
-          class="flex h-9 w-9 items-center justify-center border-2 border-black text-[10px] font-bold leading-none"
-          >SF</span
-        >
+        <img
+          src={logoSrc}
+          alt=""
+          width={logoSize}
+          height={logoSize}
+          class="h-[22px] w-[22px] shrink-0 object-contain"
+          decoding="async"
+        />
         <span class="text-sm font-bold tracking-tight md:text-base" data-i18n="hero.name">{t.hero.name}</span>
       </a>
       <nav
         class="order-3 flex w-full flex-wrap justify-center gap-x-6 gap-y-2 text-sm font-semibold md:order-none md:flex-1 md:justify-center md:gap-8"
         aria-label="Sections"
       >
-        <a href="#about" class="hover:underline">About Me</a>
-        <a href="#skills" class="hover:underline">Skills</a>
-        <a href="#projects" class="hover:underline">Project</a>
-        <a href="#contact" class="hover:underline">Contact Me</a>
+        <a href="#mailclub" class="hover:underline">Mail Club</a>
+        <a href="#shop" class="hover:underline">Art shop</a>
+        <a href="#projects" class="hover:underline">Projects</a>
+        <a href="#contact" class="hidden hover:underline">Contact Me</a>
       </nav>
       <a
         href="#contact"
-        class="inline-flex items-center gap-2 border-2 border-black bg-black px-4 py-2 text-xs font-bold uppercase tracking-wide text-white hover:bg-neutral-900"
+        class="hidden inline-flex items-center gap-2 border-2 border-black bg-black px-4 py-2 text-xs font-bold uppercase tracking-wide text-white hover:bg-neutral-900"
       >
         <span class="font-mono text-[10px]">[ICON]</span>
         Resume
@@ -95,7 +109,7 @@ const testimonials = [
     </div>
   </header>
 
-  <section id="home" class="border-b-2 border-black bg-white">
+  <section id="home" class="border-b-2 border-black bg-[#ffffff]">
     <div
       class="mx-auto grid max-w-6xl gap-12 px-4 py-16 md:grid-cols-2 md:items-center md:gap-16 md:px-6 md:py-24 lg:px-8"
     >
@@ -115,169 +129,83 @@ const testimonials = [
         >
           {t.landing.heroBlurb}
         </p>
-        <div class="mt-10 flex flex-wrap gap-3">
-          <a
-            href={`mailto:${email}`}
-            class="flex h-12 w-12 items-center justify-center border-2 border-black text-[10px] font-bold hover:bg-black hover:text-white"
-            aria-label={t.footer.mailAria}
-            >[M]</a
-          >
-          <a
-            href={instagramUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="flex h-12 w-12 items-center justify-center border-2 border-black text-[10px] font-bold hover:bg-black hover:text-white"
-            aria-label={t.footer.instagramAria}
-            >[IG]</a
-          >
-          <a
-            href={shopifyUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="flex h-12 w-12 items-center justify-center border-2 border-black text-[10px] font-bold hover:bg-black hover:text-white"
-            aria-label={`${t.collaboration.shopifyCta}. ${t.collaboration.shopifyHint}`}
-            >[S]</a
-          >
-          <span
-            class="flex h-12 w-12 cursor-not-allowed items-center justify-center border-2 border-dashed border-neutral-400 text-[10px] font-bold text-neutral-500"
-            title="Placeholder">[in]</span
-          >
-        </div>
       </div>
       <figure class="min-w-0">
-        <div class="relative aspect-square w-full max-w-lg overflow-hidden border-2 border-black bg-neutral-100 md:ml-auto">
-          <ImageSizeBadge w={imgDims.hero.w} h={imgDims.hero.h} />
+        <div class="relative aspect-square w-full max-w-lg overflow-hidden bg-[#ffffff] md:ml-auto">
           <img
             src={img.heroIllustration}
-            alt=""
+            alt="Sofie Fribo — illustration"
             width={imgDims.hero.w}
             height={imgDims.hero.h}
             loading="eager"
             decoding="async"
-            class="h-full w-full object-cover"
+            class="h-full w-full object-contain object-center"
           />
         </div>
-        <figcaption class="mt-2 font-mono text-[10px] text-neutral-500">
-          Dummy — hero illustration slot (replace with your line-art / portrait asset)
-        </figcaption>
       </figure>
     </div>
-  </section>
 
-  <section id="skills" class="border-b-2 border-black bg-white py-20 md:py-28">
-    <div class="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
-      <h2 class="text-center text-3xl font-bold md:text-4xl">
-        My <span class="font-black">Skills</span>
-      </h2>
-      <div class="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5 md:gap-5">
-        {
-          SKILL_LABELS.map((label, i) => (
-            <button
-              type="button"
-              data-skill-btn
-              data-skill-index={i}
-              data-active={i === 0 ? "" : undefined}
-              class="skill-square group flex aspect-square flex-col border-2 border-black bg-white text-center text-black transition hover:bg-neutral-100 data-[active]:bg-black data-[active]:text-white data-[active]:hover:bg-black"
-            >
-              <span class="skill-thumb-wrap relative mx-auto mt-3 flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden border border-black bg-neutral-100 group-data-[active]:border-white">
-                <img
-                  src={ph(`Skill ${i + 1}`, imgDims.skillIcon.w, imgDims.skillIcon.h)}
-                  alt=""
-                  width={56}
-                  height={56}
-                  loading="lazy"
-                  decoding="async"
-                  class="skill-btn-img h-full w-full object-cover"
-                />
-                <ImageSizeBadge w={imgDims.skillIcon.w} h={imgDims.skillIcon.h} compact />
-              </span>
-              <span class="mt-auto px-1 pb-3 pt-2 text-[11px] font-bold leading-tight md:text-xs">{label}</span>
-            </button>
-          ))
-        }
-      </div>
-      <p class="mx-auto mt-6 max-w-2xl text-center text-xs text-neutral-500">
-        Skill tiles use dummy thumbnails — swap each <code class="font-mono">img</code> for your own icon artwork.
-        Active tile inverts like the reference; the experience list below follows the selected skill.
-      </p>
-    </div>
-  </section>
-
-  <section id="experience" class="border-b-2 border-black bg-black py-20 text-white md:py-28">
-    <div class="mx-auto max-w-4xl px-4 md:px-6 lg:px-8">
-      <h2 class="text-center text-3xl font-bold md:text-4xl">
-        My <span class="font-black">Experience</span>
-      </h2>
-      <div id="experience-panels" class="mt-14 space-y-6">
-        {
-          EXPERIENCE_PANELS.map((panel, pi) => (
-            <div
-              data-experience-panel
-              data-panel-index={pi}
-              class:list={[pi === 0 ? "space-y-6" : "space-y-6 hidden"]}
-            >
-              {panel.map((card) => (
-                <article class="border-2 border-neutral-600 bg-black px-5 py-6 md:flex md:gap-6 md:px-6 md:py-7">
-                  <div class="flex h-12 w-12 shrink-0 items-center justify-center border border-neutral-500 bg-neutral-900 text-[10px] font-mono text-neutral-400">
-                    LOGO
-                  </div>
-                  <div class="mt-4 min-w-0 flex-1 md:mt-0">
-                    <div class="flex flex-col gap-1 md:flex-row md:items-start md:justify-between">
-                      <h3 class="text-lg font-bold leading-snug md:text-xl">
-                        {card.title}
-                        <span class="block text-sm font-semibold text-neutral-300 md:inline md:before:content-['_·_']">
-                          {card.company}
-                        </span>
-                      </h3>
-                      <p class="shrink-0 text-sm font-semibold text-neutral-400 md:text-right">{card.period}</p>
-                    </div>
-                    <p class="mt-4 text-sm leading-relaxed text-neutral-300 md:text-base">{card.body}</p>
-                  </div>
-                </article>
-              ))}
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <section id="about" class="border-b-2 border-black bg-white py-20 md:py-28">
-    <div class="mx-auto grid max-w-6xl gap-12 px-4 md:grid-cols-2 md:items-start md:gap-16 md:px-6 lg:px-8">
-      <figure class="order-2 md:order-1">
-        <div class="relative aspect-square w-full overflow-hidden border-2 border-black bg-neutral-100">
-          <ImageSizeBadge w={imgDims.about.w} h={imgDims.about.h} />
-          <img
-            src={img.aboutHero}
-            alt=""
-            width={imgDims.about.w}
-            height={imgDims.about.h}
-            loading="lazy"
-            decoding="async"
-            class="h-full w-full object-cover"
-          />
-        </div>
-        <figcaption class="mt-2 font-mono text-[10px] text-neutral-500">
-          Dummy — large square “about” visual (template left column)
-        </figcaption>
-      </figure>
-      <div class="order-1 min-w-0 md:order-2">
-        <h2 class="text-3xl font-bold md:text-4xl" data-i18n="about.title">{t.about.title}</h2>
-        <div class="mt-8 space-y-6 text-base leading-relaxed text-neutral-800 md:text-lg">
-          <p data-i18n="about.p1">{t.about.p1}</p>
-          <p data-i18n="about.p2">{t.about.p2}</p>
-          <p data-i18n="about.p3">{t.about.p3}</p>
+    <div class="bg-[#ffffff] py-6 md:py-8" aria-label="Quick links">
+      <div class="w-full px-1.5 sm:px-3 md:px-12 lg:px-16 xl:px-20">
+        <div
+          class="grid w-full grid-cols-3 gap-1 sm:gap-2 max-md:origin-bottom max-md:scale-150 md:mx-auto md:w-[48.75%] md:max-w-[48.75%] md:scale-100 md:gap-2 lg:gap-2.5"
+        >
+          {
+            heroThumbs.map((thumb) => (
+              <a
+                href={heroThumbHref(thumb.key)}
+                aria-label={thumb.title}
+                class="group flex min-w-0 flex-col justify-end bg-[#ffffff] transition hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+              >
+                {/* Mailclub 600×400 비율 = 셀 높이 기준; Shop·PortFoilo는 같은 높이에 맞춤 */}
+                <div class="relative aspect-[3/2] w-full">
+                  {
+                    thumb.key === "mailclub" ? (
+                      <img
+                        src={thumb.image}
+                        alt=""
+                        width={thumb.imageW}
+                        height={thumb.imageH}
+                        loading="lazy"
+                        decoding="async"
+                        class="absolute inset-x-0 bottom-0 h-full w-full max-w-none object-contain object-bottom"
+                      />
+                    ) : (
+                      <img
+                        src={thumb.image}
+                        alt=""
+                        width={thumb.imageH}
+                        height={thumb.imageH}
+                        loading="lazy"
+                        decoding="async"
+                        class:list={[
+                          "absolute bottom-0 left-1/2 h-full w-auto max-w-full -translate-x-1/2 object-contain object-bottom",
+                          thumb.key === "shop" && "origin-bottom scale-[1.03] translate-y-[6px]",
+                          thumb.key === "portfoilo" && "origin-bottom scale-[1.2] translate-y-[10px]",
+                        ]}
+                      />
+                    )
+                  }
+                </div>
+                <span class="sr-only">{thumb.title}</span>
+              </a>
+            ))
+          }
         </div>
       </div>
     </div>
   </section>
+
+  <MailClubSection sectionId="mailclub" subscribeUrl={mailClubSubscribeUrl} />
+
+  <ArtShopSection sectionId="shop" />
 
   <section id="projects" class="border-b-2 border-black bg-black py-20 text-white md:py-28">
     <div class="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
       <h2 class="text-center text-3xl font-bold md:text-4xl">
         My <span class="font-black">Projects</span>
       </h2>
-      <div class="mt-16 grid gap-12 md:grid-cols-2 md:gap-x-10 md:gap-y-16">
+      <div class="mt-16 grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-x-8 md:gap-y-14">
         {
           projects.map((p) => (
             <article class="flex flex-col border-2 border-white/25 bg-black">
@@ -312,7 +240,7 @@ const testimonials = [
     </div>
   </section>
 
-  <section id="archive" class="border-b-2 border-black bg-white py-20 md:py-28">
+  <section id="archive" class="hidden border-b-2 border-black bg-[#ffffff] py-20 md:py-28">
     <div class="mx-auto max-w-3xl px-4 md:px-6 lg:px-8">
       <h2 class="text-3xl font-bold md:text-4xl" data-i18n="archive.title">{t.archive.title}</h2>
       <p class="mt-3 text-sm text-neutral-600 md:text-base" data-i18n="archive.subtitle">{t.archive.subtitle}</p>
@@ -329,7 +257,7 @@ const testimonials = [
                   [+]
                 </span>
               </summary>
-              <div class="border-t border-neutral-200 bg-neutral-50 px-1 py-4 md:px-3">
+              <div class="border-t border-neutral-200 bg-[#ffffff] px-1 py-4 md:px-3">
                 <ul class="list-disc space-y-2 pl-5 text-sm leading-relaxed text-neutral-700 md:text-[15px]">
                   {block.items.map((item) => (
                     <li>{item}</li>
@@ -341,7 +269,7 @@ const testimonials = [
         }
       </div>
 
-      <div class="mt-16 border-2 border-black bg-neutral-50 p-6 md:p-8">
+      <div class="mt-16 border-2 border-black bg-[#ffffff] p-6 md:p-8">
         <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-500">Hygge Time</p>
         <h3 class="mt-2 text-2xl font-bold" data-i18n="collaboration.title">{t.collaboration.title}</h3>
         <p class="mt-2 text-lg font-bold" data-i18n="collaboration.role">{t.collaboration.role}</p>
@@ -364,7 +292,7 @@ const testimonials = [
     </div>
   </section>
 
-  <section id="testimonials" class="border-b-2 border-black bg-white py-20 md:py-28">
+  <section id="testimonials" class="hidden border-b-2 border-black bg-[#ffffff] py-20 md:py-28">
     <div class="mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
       <h2 class="text-center text-3xl font-bold md:text-4xl">
         My <span class="font-black">Testimonial</span>
@@ -375,13 +303,13 @@ const testimonials = [
             <article
               class:list={[
                 "flex flex-col border-2 border-black p-6 md:p-7",
-                i === 1 ? "bg-black text-white" : "bg-white text-black",
+                i === 1 ? "bg-black text-white" : "bg-[#ffffff] text-black",
               ]}
             >
               <div
                 class:list={[
                   "relative mx-auto flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 text-[10px] font-mono",
-                  i === 1 ? "border-white bg-neutral-900 text-neutral-300" : "border-black bg-neutral-100 text-neutral-500",
+                  i === 1 ? "border-white bg-neutral-900 text-neutral-300" : "border-black bg-[#ffffff] text-neutral-500",
                 ]}
               >
                 <ImageSizeBadge
@@ -417,7 +345,7 @@ const testimonials = [
         }
       </div>
       <div
-        class="mx-auto mt-12 flex max-w-3xl flex-col gap-4 rounded-md border-2 border-black bg-neutral-50 px-6 py-5 text-sm md:flex-row md:items-center md:justify-between md:text-base"
+        class="mx-auto mt-12 flex max-w-3xl flex-col gap-4 rounded-md border-2 border-black bg-[#ffffff] px-6 py-5 text-sm md:flex-row md:items-center md:justify-between md:text-base"
       >
         <p class="font-semibold text-black" data-i18n="footer.contactLabel">{t.footer.contactLabel}</p>
         <div class="flex flex-col gap-2 md:flex-row md:gap-8">
@@ -444,7 +372,7 @@ const testimonials = [
     </div>
   </section>
 
-  <section id="contact" class="border-b-2 border-black bg-white py-20 md:py-28">
+  <section id="contact" class="hidden border-b-2 border-black bg-[#ffffff] py-20 md:py-28">
     <div class="mx-auto grid max-w-6xl gap-14 px-4 md:grid-cols-2 md:gap-16 md:px-6 lg:px-8">
       <div>
         <form id="contact-form" class="space-y-4" action="#" method="post">
@@ -454,7 +382,7 @@ const testimonials = [
               type="text"
               name="name"
               autocomplete="name"
-              class="mt-2 w-full border-2 border-black bg-white px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-black/20"
+              class="mt-2 w-full border-2 border-black bg-[#ffffff] px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-black/20"
               placeholder="Name"
             />
           </label>
@@ -464,7 +392,7 @@ const testimonials = [
               type="email"
               name="email"
               autocomplete="email"
-              class="mt-2 w-full border-2 border-black bg-white px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-black/20"
+              class="mt-2 w-full border-2 border-black bg-[#ffffff] px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-black/20"
               placeholder="you@example.com"
             />
           </label>
@@ -473,7 +401,7 @@ const testimonials = [
             <input
               type="url"
               name="website"
-              class="mt-2 w-full border-2 border-black bg-white px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-black/20"
+              class="mt-2 w-full border-2 border-black bg-[#ffffff] px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-black/20"
               placeholder="https://"
             />
           </label>
@@ -482,7 +410,7 @@ const testimonials = [
             <textarea
               name="message"
               rows={5}
-              class="mt-2 w-full resize-y border-2 border-black bg-white px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-black/20"
+              class="mt-2 w-full resize-y border-2 border-black bg-[#ffffff] px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-black/20"
               placeholder="Message"
             />
           </label>
@@ -529,7 +457,14 @@ const testimonials = [
   <footer class="bg-black py-10 text-white md:py-12">
     <div class="mx-auto flex max-w-6xl flex-col gap-6 px-4 md:flex-row md:items-center md:justify-between md:px-6 lg:px-8">
       <div class="flex items-center gap-2">
-        <span class="flex h-9 w-9 items-center justify-center border-2 border-white text-[10px] font-bold">SF</span>
+        <img
+          src={logoSrc}
+          alt=""
+          width={logoSize}
+          height={logoSize}
+          class="h-[22px] w-[22px] shrink-0 object-contain invert"
+          decoding="async"
+        />
         <span class="text-sm font-bold" data-i18n="hero.name">{t.hero.name}</span>
       </div>
       <div class="text-right text-xs text-neutral-400">
@@ -542,42 +477,8 @@ const testimonials = [
     </div>
   </footer>
 
-  <style is:global>
-    [data-skill-btn][data-active] .skill-btn-img {
-      filter: invert(1);
-    }
-    [data-skill-btn][data-active] .skill-thumb-wrap {
-      border-color: #fff;
-    }
-  </style>
-
   <script is:inline>
     (function () {
-      function initSkills() {
-        var btns = document.querySelectorAll("[data-skill-btn]");
-        var panels = document.querySelectorAll("[data-experience-panel]");
-        if (!btns.length || !panels.length) return;
-
-        function setActive(index) {
-          btns.forEach(function (b, j) {
-            if (j === index) b.setAttribute("data-active", "");
-            else b.removeAttribute("data-active");
-          });
-          panels.forEach(function (p, j) {
-            if (j === index) p.classList.remove("hidden");
-            else p.classList.add("hidden");
-          });
-        }
-
-        btns.forEach(function (b, idx) {
-          b.addEventListener("click", function () {
-            setActive(idx);
-          });
-        });
-
-        setActive(0);
-      }
-
       function initForm() {
         var f = document.getElementById("contact-form");
         if (!f) return;
@@ -587,12 +488,8 @@ const testimonials = [
       }
 
       if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", function () {
-          initSkills();
-          initForm();
-        });
+        document.addEventListener("DOMContentLoaded", initForm);
       } else {
-        initSkills();
         initForm();
       }
     })();

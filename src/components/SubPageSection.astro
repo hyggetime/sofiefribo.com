@@ -1,0 +1,50 @@
+---
+import type { SofieSubpage } from "../data/sofiefriboSubpages";
+
+interface Props {
+  page: SofieSubpage;
+  /** 앵커 id (메인 메뉴 스크롤용) */
+  sectionId?: string;
+  /** 전용 페이지로 이동 링크 표시 */
+  showPageLink?: boolean;
+}
+
+const { page, sectionId = page.key, showPageLink = false } = Astro.props;
+---
+
+<section
+  id={sectionId}
+  class="border-b-2 border-black bg-[#ffffff] py-20 md:py-28"
+>
+  <div class="mx-auto grid max-w-6xl gap-12 px-4 md:grid-cols-2 md:items-center md:gap-16 md:px-6 lg:px-8">
+    <figure class="order-2 min-w-0 md:order-1">
+      <div class="relative aspect-[3/2] w-full overflow-hidden bg-[#ffffff]">
+        <img
+          src={page.image}
+          alt={page.title}
+          width={page.imageW}
+          height={page.imageH}
+          loading="lazy"
+          decoding="async"
+          class="h-full w-full object-contain object-center"
+        />
+      </div>
+    </figure>
+    <div class="order-1 min-w-0 md:order-2">
+      <h2 class="text-3xl font-bold md:text-4xl">{page.title}</h2>
+      <p class="mt-8 text-base leading-relaxed text-neutral-800 md:text-lg">
+        {page.description}
+      </p>
+      {
+        showPageLink && (
+          <a
+            href={page.path}
+            class="mt-8 inline-block text-sm font-semibold underline decoration-neutral-400 underline-offset-4 hover:decoration-black"
+          >
+            View {page.title} page →
+          </a>
+        )
+      }
+    </div>
+  </div>
+</section>

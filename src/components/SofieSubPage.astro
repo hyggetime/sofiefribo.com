@@ -1,0 +1,54 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SubPageSection from "../components/SubPageSection.astro";
+import MailClubSection from "../components/MailClubSection.astro";
+import ArtShopSection from "../components/ArtShopSection.astro";
+import type { SofieSubpage } from "../data/sofiefriboSubpages";
+
+interface Props {
+  page: SofieSubpage;
+}
+
+const { page } = Astro.props;
+const logoSrc = "/images/misc/소피_피보.png";
+/** 표시 크기 — 기존 36px(h-9)의 60% */
+const logoSize = 22;
+const shopifyUrl =
+  import.meta.env.PUBLIC_SHOPIFY_URL?.toString().trim() || "https://www.shopify.com";
+const mailClubSubscribeUrl =
+  import.meta.env.PUBLIC_SHOPIFY_MAILCLUB_URL?.toString().trim() || shopifyUrl;
+---
+
+<Layout title={`${page.title} — Sofie Fribo`} description={page.description}>
+  <header class="border-b-2 border-black bg-[#ffffff]">
+    <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 md:px-6 lg:px-8">
+      <a href="/" class="flex items-center gap-2 text-black">
+        <img
+          src={logoSrc}
+          alt=""
+          width={logoSize}
+          height={logoSize}
+          class="h-[22px] w-[22px] shrink-0 object-contain"
+          decoding="async"
+        />
+        <span class="text-sm font-bold tracking-tight md:text-base">Sofie Fribo</span>
+      </a>
+      <a
+        href={`/#${page.key}`}
+        class="text-sm font-semibold underline decoration-neutral-400 underline-offset-4 hover:decoration-black"
+      >
+        ← Home
+      </a>
+    </div>
+  </header>
+
+  {
+    page.key === "mailclub" ? (
+      <MailClubSection sectionId={page.key} subscribeUrl={mailClubSubscribeUrl} />
+    ) : page.key === "shop" ? (
+      <ArtShopSection sectionId={page.key} />
+    ) : (
+      <SubPageSection page={page} sectionId={page.key} />
+    )
+  }
+</Layout>
