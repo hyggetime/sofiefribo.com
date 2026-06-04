@@ -27,25 +27,26 @@ export const MAIL_CLUB_ASSETS = {
 } as const;
 
 export const MAIL_CLUB_CONTENT = {
+  heading: "Join the Snail Mail Club.",
   intro:
-    "Slow mail for busy days — a small parcel from my studio in Seoul, without the digital noise.",
-  heading: "Join the Snail Mail Club",
+    "Tired of digital noise, screen glare, and fast algorithms? Let's bring back the magic of real, analog post. Every month, I write, draw, and ship a personal package of joy directly from my studio here in Seoul to your physical mailbox across the world.",
+  whatYouGet: "What you get:",
   perks: [
     {
-      title: "A hand-illustrated letter:",
-      body: "A personal note from me each month — sketches, small stories, and what I am drawing right now.",
+      title: "A Hand-Illustrated Letter:",
+      body: "Packed with honest, funny, and unpolished stories about motherhood, cultural shocks, and daily life as a foreigner in South Korea.",
     },
     {
-      title: "An exclusive art print:",
-      body: "A postcard-sized print you will not find in the shop — made for members only.",
+      title: "An Exclusive Art Print/Postcard:",
+      body: "A high-quality postcard-sized print featuring my unique, Seoul-inspired illustrations. Perfect for framing or sending to a friend.",
     },
     {
-      title: "A monthly surprise:",
-      body: "A tiny extra in the envelope — stickers, mini zines, or something I am testing in the studio.",
+      title: "A Monthly Surprise:",
+      body: "A little physical extra to brighten your day – like custom glossy stickers, paper DIY crafts, or unique seasonal stationery items.",
     },
   ],
-  price: "100 DKK / $14",
-  shipping: "Worldwide shipping from Seoul is included",
+  subscribeCta: "SUBSCRIBE NOW — $16.00 / month",
+  shipping: "Worldwide shipping from Seoul is included.",
   faq: [
     {
       question: "Can I still get this month's edition?",
