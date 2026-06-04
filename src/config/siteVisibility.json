@@ -57,6 +57,15 @@
       "location": "Home · #shop (below hero)",
       "file": "src/components/ArtShopSection.astro",
       "note": "Replaced with “Coming Soon..” placeholder"
+    },
+    {
+      "id": "projects.thumbnails",
+      "hidden": true,
+      "kind": "section",
+      "label": "My Projects thumbnail grid",
+      "location": "Home · #projects (below title)",
+      "file": "src/pages/index.astro",
+      "note": "Replaced with “Coming Soon..” placeholder"
     }
   ],
   "siteMap": {

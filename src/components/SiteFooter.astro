@@ -1,0 +1,51 @@
+---
+import InstagramIcon from "./InstagramIcon.astro";
+import type { TranslationTree } from "../i18n/translations";
+
+interface Props {
+  t: TranslationTree;
+  logoSrc: string;
+  logoSize: number;
+  instagramUrl: string;
+}
+
+const { t, logoSrc, logoSize, instagramUrl } = Astro.props;
+const igGradientId = "ig-gradient-footer";
+---
+
+<footer class="bg-black py-10 text-white md:py-12">
+  <div
+    class="mx-auto flex max-w-6xl flex-col gap-8 px-4 md:flex-row md:items-center md:justify-between md:gap-6 md:px-6 lg:px-8"
+  >
+    <div class="flex items-center gap-2">
+      <img
+        src={logoSrc}
+        alt=""
+        width={logoSize}
+        height={logoSize}
+        class="h-[22px] w-[22px] shrink-0 object-contain invert"
+        decoding="async"
+      />
+      <span class="text-sm font-bold" data-i18n="hero.name">{t.hero.name}</span>
+    </div>
+
+    <a
+      href={instagramUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-2.5 text-sm font-semibold text-white transition hover:opacity-80"
+      aria-label={t.footer.instagramAria}
+      data-i18n-attr="footer.instagram"
+    >
+      <InstagramIcon class="h-7 w-7 shrink-0" gradientId={igGradientId} />
+      <span>@sofiefribo_illustration</span>
+    </a>
+
+    <div class="md:text-right">
+      <p data-i18n="footer.designed" class="text-xs text-neutral-300">{t.footer.designed}</p>
+      <p class="mt-1 text-xs text-neutral-400" data-i18n="footer.rights">
+        © {new Date().getFullYear()} {t.footer.rights}
+      </p>
+    </div>
+  </div>
+</footer>

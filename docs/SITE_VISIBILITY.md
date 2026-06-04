@@ -3,9 +3,9 @@
 > **자동 생성 파일** — 직접 수정하지 마세요.  
 > 숨김/보이기 변경: `src/config/siteVisibility.json` 수정 → `npm run sync:visibility`
 
-마지막 동기화: 2026-06-04T14:42:40.712Z
+마지막 동기화: 2026-06-04T14:49:55.777Z
 
-## 숨김 처리 목록 (7)
+## 숨김 처리 목록 (8)
 
 | ID | 종류 | 라벨 | 위치 | 파일 |
 | --- | --- | --- | --- | --- |
@@ -16,6 +16,7 @@
 | `section.testimonials` | section | My Testimonial | Home · #testimonials | `src/pages/index.astro` |
 | `section.contact` | section | Contact form & Let's talk | Home · #contact | `src/pages/index.astro` |
 | `artShop.productThumbnails` | section | Art shop product thumbnail grid<br/>_Replaced with “Coming Soon..” placeholder_ | Home · #shop (below hero) | `src/components/ArtShopSection.astro` |
+| `projects.thumbnails` | section | My Projects thumbnail grid<br/>_Replaced with “Coming Soon..” placeholder_ | Home · #projects (below title) | `src/pages/index.astro` |
 
 ## 표시 중 (0)
 

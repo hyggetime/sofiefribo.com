@@ -249,7 +249,7 @@ export const translations: Record<Locale, TranslationTree> = {
       instagramAria: "Sofie Fribo on Instagram",
       mailAria: "Email Sofie Fribo",
       designed: "Designed with love in Seoul",
-      rights: "All rights reserved.",
+      rights: "Sofie Fribo. All rights reserved.",
     },
   },
   da: {
@@ -298,7 +298,7 @@ export const translations: Record<Locale, TranslationTree> = {
       instagramAria: "Sofie Fribo på Instagram",
       mailAria: "Send e-mail til Sofie Fribo",
       designed: "Designet med kærlighed i Seoul",
-      rights: "Alle rettigheder forbeholdes.",
+      rights: "Sofie Fribo. Alle rettigheder forbeholdes.",
     },
   },
   ko: {
@@ -346,7 +346,7 @@ export const translations: Record<Locale, TranslationTree> = {
       instagramAria: "소피 피보 인스타그램",
       mailAria: "소피 피보에게 메일 보내기",
       designed: "Designed with love in Seoul",
-      rights: "모든 권리 보유.",
+      rights: "Sofie Fribo. 모든 권리 보유.",
     },
   },
 };

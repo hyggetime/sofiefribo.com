@@ -8,6 +8,7 @@ import { SOFIEFRIBO_SUBPAGES } from "../data/sofiefriboSubpages";
 import { resolveMailClubSubscribeUrl } from "../data/mailClubContent";
 import MailClubSection from "../components/MailClubSection.astro";
 import ArtShopSection from "../components/ArtShopSection.astro";
+import SiteFooter from "../components/SiteFooter.astro";
 
 const t = translations[defaultLocale];
 const shopifyUrl =
@@ -22,7 +23,6 @@ const logoSize = 22;
 /** 권장 에셋 크기(px) — placehold·배지·width/height와 동기 */
 const imgDims = {
   hero: { w: 1400, h: 1400 },
-  project: { w: 800, h: 600 },
   avatar: { w: 128, h: 128 },
 } as const;
 
@@ -38,15 +38,6 @@ const heroThumbHref = (key: (typeof SOFIEFRIBO_SUBPAGES)[number]["key"]) =>
 const img = {
   heroIllustration: "/images/hero/SOFIE_FRIBO_HERO.png",
 } as const;
-
-const projects = [
-  { id: 1, num: "01", title: "Bangadari workshops", desc: "Dummy — library programmes, print play, and community calendars." },
-  { id: 2, num: "02", title: "Hygge Time objects", desc: "Dummy — yut, norigae, and shelf stories for tactile gifts." },
-  { id: 3, num: "03", title: "I Was Pregnant in Korea", desc: "Dummy — essay book layout, spreads, and print proofs." },
-  { id: 4, num: "04", title: "Daily drawing diary", desc: "Dummy — Instagram rhythm, thumbnails, and ink tests." },
-  { id: 5, num: "05", title: "Exhibition graphics", desc: "Dummy — wall labels, wayfinding, and quiet typography." },
-  { id: 6, num: "06", title: "Popup cards & prints", desc: "Dummy — small editions, folds, and paper stocks." },
-] as const;
 
 const testimonials = [
   {
@@ -209,38 +200,12 @@ const testimonials = [
       <h2 class="text-center text-3xl font-bold md:text-4xl">
         My <span class="font-black">Projects</span>
       </h2>
-      <div class="mt-16 grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-x-8 md:gap-y-14">
-        {
-          projects.map((p) => (
-            <article class="flex flex-col border-2 border-white/25 bg-black">
-              <div class="relative aspect-[4/3] w-full overflow-hidden border-b-2 border-white/20 bg-neutral-900">
-                <ImageSizeBadge w={imgDims.project.w} h={imgDims.project.h} tone="dark" />
-                <img
-                  src={ph(`Project ${p.num}`, imgDims.project.w, imgDims.project.h)}
-                  alt=""
-                  width={imgDims.project.w}
-                  height={imgDims.project.h}
-                  loading="lazy"
-                  decoding="async"
-                  class="h-full w-full object-cover opacity-90"
-                />
-              </div>
-              <div class="flex flex-1 flex-col px-5 py-6 md:px-6 md:py-7">
-                <p class="font-mono text-xs font-bold text-neutral-400">{p.num}</p>
-                <h3 class="mt-2 text-xl font-bold md:text-2xl">{p.title}</h3>
-                <p class="mt-3 flex-1 text-sm leading-relaxed text-neutral-300 md:text-base">{p.desc}</p>
-                <a
-                  href={`/projects/${p.id}`}
-                  class="mt-6 inline-flex w-max items-center gap-2 border-2 border-white px-4 py-2 text-xs font-bold uppercase tracking-wide text-white hover:bg-white hover:text-black"
-                >
-                  more
-                  <span class="font-mono text-[10px]">[→]</span>
-                </a>
-              </div>
-            </article>
-          ))
-        }
-      </div>
+      <p
+        class="mx-auto mt-16 max-w-4xl text-center text-[1.6875rem] font-bold leading-snug tracking-wide text-white md:mt-20 md:text-[1.875rem]"
+        aria-live="polite"
+      >
+        Coming Soon..
+      </p>
     </div>
   </section>
 
@@ -458,28 +423,7 @@ const testimonials = [
     </div>
   </section>
 
-  <footer class="bg-black py-10 text-white md:py-12">
-    <div class="mx-auto flex max-w-6xl flex-col gap-6 px-4 md:flex-row md:items-center md:justify-between md:px-6 lg:px-8">
-      <div class="flex items-center gap-2">
-        <img
-          src={logoSrc}
-          alt=""
-          width={logoSize}
-          height={logoSize}
-          class="h-[22px] w-[22px] shrink-0 object-contain invert"
-          decoding="async"
-        />
-        <span class="text-sm font-bold" data-i18n="hero.name">{t.hero.name}</span>
-      </div>
-      <div class="text-right text-xs text-neutral-400">
-        <p data-i18n="footer.designed" class="text-neutral-300">{t.footer.designed}</p>
-        <p class="mt-1" data-i18n="footer.rights">
-          © {new Date().getFullYear()}
-          {t.footer.rights}
-        </p>
-      </div>
-    </div>
-  </footer>
+  <SiteFooter t={t} logoSrc={logoSrc} logoSize={logoSize} instagramUrl={instagramUrl} />
 
   <script is:inline>
     (function () {
