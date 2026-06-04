@@ -59,7 +59,7 @@ const content = MAIL_CLUB_CONTENT;
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        class="subscribe-btn mx-auto mt-10 inline-block w-full max-w-[16.875rem] rounded-sm transition-[transform,background-color] duration-75 hover:opacity-90 active:translate-x-[2px] active:translate-y-[2px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black md:mt-12"
+        class="press-surface mx-auto mt-10 inline-block w-full max-w-[16.875rem] rounded-sm bg-[#ffffff] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black md:mt-12"
         aria-label="Subscribe to Snail Mail Club on Shopify"
       >
         <img
@@ -69,7 +69,7 @@ const content = MAIL_CLUB_CONTENT;
           height={subscribe.h}
           loading="lazy"
           decoding="async"
-          class="subscribe-btn-img h-auto w-full object-contain transition-[filter] duration-75"
+          class="h-auto w-full object-contain"
         />
       </a>
 
@@ -99,13 +99,3 @@ const content = MAIL_CLUB_CONTENT;
     </div>
   </div>
 </section>
-
-<style>
-  /* PNG: 투명 + 검은 선만 → 누를 때 invert + 검정 채움 = 흰 선·검정 버튼 */
-  .subscribe-btn:active {
-    background-color: #000;
-  }
-  .subscribe-btn:active .subscribe-btn-img {
-    filter: invert(1);
-  }
-</style>
