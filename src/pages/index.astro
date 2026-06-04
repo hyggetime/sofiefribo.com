@@ -108,7 +108,7 @@ const testimonials = [
     <div
       class="mx-auto grid max-w-6xl gap-12 px-4 py-16 md:grid-cols-2 md:items-center md:gap-16 md:px-6 md:py-24 lg:px-8"
     >
-      <div class="min-w-0">
+      <div class="order-2 min-w-0 md:order-1">
         <p class="text-pretty text-4xl font-bold leading-[1.1] tracking-tight md:text-5xl lg:text-6xl">
           <span data-i18n="landing.hello">{t.landing.hello}</span>{" "}
           <span class="whitespace-nowrap font-black" data-i18n="hero.name">{t.hero.name}</span>
@@ -125,7 +125,7 @@ const testimonials = [
           {t.landing.heroBlurb}
         </p>
       </div>
-      <figure class="min-w-0">
+      <figure class="order-1 min-w-0 md:order-2">
         <div class="relative aspect-square w-full max-w-lg overflow-hidden bg-[#ffffff] md:ml-auto">
           <img
             src={img.heroIllustration}
