@@ -3,7 +3,7 @@ import { MAIL_CLUB_ASSETS, MAIL_CLUB_CONTENT, resolveMailClubSubscribeUrl } from
 
 interface Props {
   sectionId?: string;
-  /** Shopify 구독 URL — `.env` `PUBLIC_SHOPIFY_MAILCLUB_URL` 또는 기본 Hygge 링크 */
+  /** Shopify 구독 URL — `.env` `PUBLIC_SHOPIFY_MAILCLUB_URL` 또는 기본 shop.sofiefribo.com 링크 */
   subscribeUrl?: string;
 }
 
@@ -56,29 +56,31 @@ const content = MAIL_CLUB_CONTENT;
         }
       </ul>
 
-      <p class="mt-12 text-sm font-bold uppercase tracking-[0.12em] md:text-base">{content.subscribeCta}</p>
+      <div class="mt-12 text-center">
+        <p class="text-sm font-bold uppercase tracking-[0.12em] md:text-base">{content.subscribeCta}</p>
 
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="press-surface mt-6 inline-block w-full max-w-[16.875rem] rounded-sm bg-[#ffffff] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black"
-        aria-label={content.subscribeCta}
-      >
-        <img
-          src={subscribe.src}
-          alt={subscribe.alt}
-          width={subscribe.w}
-          height={subscribe.h}
-          loading="lazy"
-          decoding="async"
-          class="h-auto w-full object-contain"
-        />
-      </a>
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="press-surface mx-auto mt-6 inline-block w-full max-w-[16.875rem] rounded-sm bg-[#ffffff] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black"
+          aria-label={content.subscribeCta}
+        >
+          <img
+            src={subscribe.src}
+            alt={subscribe.alt}
+            width={subscribe.w}
+            height={subscribe.h}
+            loading="lazy"
+            decoding="async"
+            class="h-auto w-full object-contain"
+          />
+        </a>
 
-      <p class="mt-6 text-xs font-semibold uppercase tracking-[0.15em] text-neutral-600 md:text-sm">
-        {content.shipping}
-      </p>
+        <p class="mt-6 text-xs font-semibold uppercase tracking-[0.15em] text-neutral-600 md:text-sm">
+          {content.shipping}
+        </p>
+      </div>
 
       <div class="mt-12 border-t-2 border-black pt-8">
         <h3 class="text-sm font-bold uppercase tracking-[0.2em] text-neutral-600">FAQ</h3>

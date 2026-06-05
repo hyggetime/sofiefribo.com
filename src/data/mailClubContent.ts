@@ -1,10 +1,10 @@
 /**
- * Shopify 구독 상품 URL (Hyggesupermarket).
+ * Shopify 구독 상품 URL (shop.sofiefribo.com).
  * `variant` · `selling_plan` 쿼리는 Shopify 내부 ID — 상품 **이름** 변경과 무관.
  * `/products/…` 경로의 handle은 Shopify에서 슬러그를 바꾸면 깨질 수 있음 → `.env`로 덮어쓰기 권장.
  */
 export const MAIL_CLUB_SUBSCRIBE_URL_DEFAULT =
-  "https://hyggesupermarket.com/products/sofies-mail-club-subscription?variant=54074453655862&selling_plan=8707866934";
+  "https://shop.sofiefribo.com/products/sofies-mail-club-subscription?variant=54074453655862&selling_plan=8707866934";
 
 export function resolveMailClubSubscribeUrl(envUrl?: string | null): string {
   const fromEnv = envUrl?.toString().trim();
