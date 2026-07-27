@@ -7,8 +7,12 @@ export const MAIL_CLUB_SUBSCRIBE_URL_DEFAULT =
   "https://hyggesupermarket.com/products/sofies-mail-club-subscription?_pos=1&_psq=mail&_ss=e&_v=1.0&selling_plan=8707309878&variant=54074453655862";
 
 export function resolveMailClubSubscribeUrl(envUrl?: string | null): string {
-  const fromEnv = envUrl?.toString().trim();
-  return fromEnv || MAIL_CLUB_SUBSCRIBE_URL_DEFAULT;
+  const raw = envUrl?.toString().trim() || MAIL_CLUB_SUBSCRIBE_URL_DEFAULT;
+  const url = new URL(raw);
+  url.searchParams.set("utm_source", "sofiefribo");
+  url.searchParams.set("utm_medium", "website");
+  url.searchParams.set("utm_campaign", "shop_link");
+  return url.toString();
 }
 
 export const MAIL_CLUB_ASSETS = {

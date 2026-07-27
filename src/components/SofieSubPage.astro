@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import SubPageSection from "../components/SubPageSection.astro";
 import { resolveMailClubSubscribeUrl } from "../data/mailClubContent";
+import { resolveShopifyStoreUrl } from "../data/shopLinks";
 import MailClubSection from "../components/MailClubSection.astro";
 import ArtShopSection from "../components/ArtShopSection.astro";
 import type { SofieSubpage } from "../data/sofiefriboSubpages";
@@ -14,8 +15,7 @@ const { page } = Astro.props;
 const logoSrc = "/images/misc/소피_피보.png";
 /** 표시 크기 — 기존 36px(h-9)의 60% */
 const logoSize = 22;
-const shopifyUrl =
-  import.meta.env.PUBLIC_SHOPIFY_URL?.toString().trim() || "https://www.shopify.com";
+const shopifyUrl = resolveShopifyStoreUrl(import.meta.env.PUBLIC_SHOPIFY_URL);
 const mailClubSubscribeUrl = resolveMailClubSubscribeUrl(import.meta.env.PUBLIC_SHOPIFY_MAILCLUB_URL);
 ---
 

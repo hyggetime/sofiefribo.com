@@ -6,13 +6,13 @@ import { hiddenClass } from "../config/siteVisibility";
 import { translations, defaultLocale } from "../i18n/translations";
 import { SOFIEFRIBO_SUBPAGES } from "../data/sofiefriboSubpages";
 import { resolveMailClubSubscribeUrl } from "../data/mailClubContent";
+import { resolveShopifyStoreUrl } from "../data/shopLinks";
 import MailClubSection from "../components/MailClubSection.astro";
 import ArtShopSection from "../components/ArtShopSection.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 
 const t = translations[defaultLocale];
-const shopifyUrl =
-  import.meta.env.PUBLIC_SHOPIFY_URL?.toString().trim() || "https://www.shopify.com";
+const shopifyUrl = resolveShopifyStoreUrl(import.meta.env.PUBLIC_SHOPIFY_URL);
 const mailClubSubscribeUrl = resolveMailClubSubscribeUrl(import.meta.env.PUBLIC_SHOPIFY_MAILCLUB_URL);
 const instagramUrl = "https://www.instagram.com/sofiefribo_illustration/";
 const email = "sofiefribo.korea@gmail.com";
